@@ -1,0 +1,2646 @@
+--
+-- PostgreSQL database cluster dump
+--
+
+-- Started on 2019-12-07 10:27:40
+
+SET default_transaction_read_only = off;
+
+SET client_encoding = 'UTF8';
+SET standard_conforming_strings = on;
+
+--
+-- Roles
+--
+
+CREATE ROLE postgres;
+ALTER ROLE postgres WITH SUPERUSER INHERIT CREATEROLE CREATEDB LOGIN REPLICATION BYPASSRLS PASSWORD 'SCRAM-SHA-256$4096:7r4TDUZJnlgU56e9pvJorQ==$hhK1X1vknoyTgGYyLLqU1n1TAOHGjykitzHe6jTkEGk=:NsdpeaLstyFautO9Ds57ilmqZi30FLhKysGaBUQJoDE=';
+
+
+
+
+
+
+--
+-- Databases
+--
+
+--
+-- Database "template1" dump
+--
+
+\connect template1
+
+--
+-- PostgreSQL database dump
+--
+
+-- Dumped from database version 14.1
+-- Dumped by pg_dump version 14.1
+
+-- Started on 2019-12-07 10:27:40
+
+SET statement_timeout = 0;
+SET lock_timeout = 0;
+SET idle_in_transaction_session_timeout = 0;
+SET client_encoding = 'UTF8';
+SET standard_conforming_strings = on;
+SELECT pg_catalog.set_config('search_path', '', false);
+SET check_function_bodies = false;
+SET xmloption = content;
+SET client_min_messages = warning;
+SET row_security = off;
+
+-- Completed on 2019-12-07 10:27:43
+
+--
+-- PostgreSQL database dump complete
+--
+
+--
+-- Database "erupe" dump
+--
+
+--
+-- PostgreSQL database dump
+--
+
+-- Dumped from database version 14.1
+-- Dumped by pg_dump version 14.1
+
+-- Started on 2019-12-07 10:27:43
+
+SET statement_timeout = 0;
+SET lock_timeout = 0;
+SET idle_in_transaction_session_timeout = 0;
+SET client_encoding = 'UTF8';
+SET standard_conforming_strings = on;
+SELECT pg_catalog.set_config('search_path', '', false);
+SET check_function_bodies = false;
+SET xmloption = content;
+SET client_min_messages = warning;
+SET row_security = off;
+
+--
+-- TOC entry 3693 (class 1262 OID 24576)
+-- Name: erupe; Type: DATABASE; Schema: -; Owner: postgres
+--
+
+CREATE DATABASE erupe WITH TEMPLATE = template0 ENCODING = 'UTF8' LOCALE = 'English_United States.932';
+
+
+ALTER DATABASE erupe OWNER TO postgres;
+
+\connect erupe
+
+SET statement_timeout = 0;
+SET lock_timeout = 0;
+SET idle_in_transaction_session_timeout = 0;
+SET client_encoding = 'UTF8';
+SET standard_conforming_strings = on;
+SELECT pg_catalog.set_config('search_path', '', false);
+SET check_function_bodies = false;
+SET xmloption = content;
+SET client_min_messages = warning;
+SET row_security = off;
+
+--
+-- TOC entry 880 (class 1247 OID 24578)
+-- Name: festival_colour; Type: TYPE; Schema: public; Owner: postgres
+--
+
+CREATE TYPE public.festival_colour AS ENUM (
+    'none',
+    'red',
+    'blue'
+);
+
+
+ALTER TYPE public.festival_colour OWNER TO postgres;
+
+--
+-- TOC entry 883 (class 1247 OID 24586)
+-- Name: guild_application_type; Type: TYPE; Schema: public; Owner: postgres
+--
+
+CREATE TYPE public.guild_application_type AS ENUM (
+    'applied',
+    'invited'
+);
+
+
+ALTER TYPE public.guild_application_type OWNER TO postgres;
+
+--
+-- TOC entry 886 (class 1247 OID 24592)
+-- Name: uint16; Type: DOMAIN; Schema: public; Owner: postgres
+--
+
+CREATE DOMAIN public.uint16 AS integer
+	CONSTRAINT uint16_check CHECK (((VALUE >= 0) AND (VALUE <= 65536)));
+
+
+ALTER DOMAIN public.uint16 OWNER TO postgres;
+
+--
+-- TOC entry 890 (class 1247 OID 24595)
+-- Name: uint8; Type: DOMAIN; Schema: public; Owner: postgres
+--
+
+CREATE DOMAIN public.uint8 AS smallint
+	CONSTRAINT uint8_check CHECK (((VALUE >= 0) AND (VALUE <= 255)));
+
+
+ALTER DOMAIN public.uint8 OWNER TO postgres;
+
+--
+-- TOC entry 269 (class 1255 OID 24597)
+-- Name: raviinit(); Type: PROCEDURE; Schema: public; Owner: postgres
+--
+
+CREATE PROCEDURE public.raviinit()
+    LANGUAGE plpgsql
+    AS $$
+BEGIN
+ 
+INSERT INTO public.raviregister(
+	refid, nextravi, ravistarted, raviposttime, ravitype, maxplayers, ravikilled, carvequest, register1, register2, register3, register4, register5)
+	VALUES (12, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0);
+	
+INSERT INTO public.ravistate(
+	refid, phase1hp, phase2hp, phase3hp, phase4hp, phase5hp, phase6hp, phase7hp, phase8hp, phase9hp, unknown1, unknown2, unknown3, unknown4, unknown5, unknown6, unknown7, unknown8, unknown9, unknown10, unknown11, unknown12, unknown13, unknown14, unknown15, unknown16, unknown17, unknown18, unknown19, unknown20, damagemultiplier)
+	VALUES (29, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1);
+	
+INSERT INTO public.ravisupport(
+	refid, support1, support2, support3, support4, support5, support6, support7, support8, support9, support10, support11, support12, support13, support14, support15, support16, support17, support18, support19, support20, support21, support22, support23, support24, support25)
+	VALUES (25, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0);
+
+    COMMIT;
+END;
+$$;
+
+
+ALTER PROCEDURE public.raviinit() OWNER TO postgres;
+
+--
+-- TOC entry 278 (class 1255 OID 24598)
+-- Name: ravireset(integer); Type: PROCEDURE; Schema: public; Owner: postgres
+--
+
+CREATE PROCEDURE public.ravireset(IN zeroed integer)
+    LANGUAGE plpgsql
+    AS $$
+BEGIN
+ 
+UPDATE public.ravistate
+	SET refid=29, phase1hp=zeroed, phase2hp=zeroed, phase3hp=zeroed, phase4hp=zeroed, phase5hp=zeroed, phase6hp=zeroed, phase7hp=zeroed, phase8hp=zeroed, phase9hp=zeroed, unknown1=zeroed, unknown2=zeroed, unknown3=zeroed, unknown4=zeroed, unknown5=zeroed, unknown6=zeroed, unknown7=zeroed, unknown8=zeroed, unknown9=zeroed, unknown10=zeroed, unknown11=zeroed, unknown12=zeroed, unknown13=zeroed, unknown14=zeroed, unknown15=zeroed, unknown16=zeroed, unknown17=zeroed, unknown18=zeroed, unknown19=zeroed, unknown20=zeroed, damagemultiplier=1
+	WHERE refid = 29;
+
+UPDATE public.raviregister
+	SET refid=12, nextravi=zeroed, ravistarted=zeroed, raviposttime=zeroed, ravitype=zeroed, maxplayers=zeroed, ravikilled=zeroed, carvequest=zeroed, register1=zeroed, register2=zeroed, register3=zeroed, register4=zeroed, register5=zeroed
+	WHERE refid = 12;
+
+UPDATE public.ravisupport
+	SET refid=25, support1=zeroed, support2=zeroed, support3=zeroed, support4=zeroed, support5=zeroed, support6=zeroed, support7=zeroed, support8=zeroed, support9=zeroed, support10=zeroed, support11=zeroed, support12=zeroed, support13=zeroed, support14=zeroed, support15=zeroed, support16=zeroed, support17=zeroed, support18=zeroed, support19=zeroed, support20=zeroed, support21=zeroed, support22=zeroed, support23=zeroed, support24=zeroed, support25=zeroed
+	WHERE refid = 25;
+
+    COMMIT;
+END;
+$$;
+
+
+ALTER PROCEDURE public.ravireset(IN zeroed integer) OWNER TO postgres;
+
+SET default_tablespace = '';
+
+SET default_table_access_method = heap;
+
+--
+-- TOC entry 209 (class 1259 OID 24599)
+-- Name: account_sub; Type: TABLE; Schema: public; Owner: postgres
+--
+
+CREATE TABLE public.account_sub (
+    id integer NOT NULL,
+    discord_id text,
+    erupe_account text,
+    erupe_password text,
+    date_inscription date,
+    country text,
+    presentation text
+);
+
+
+ALTER TABLE public.account_sub OWNER TO postgres;
+
+--
+-- TOC entry 210 (class 1259 OID 24604)
+-- Name: account_auth_id_seq; Type: SEQUENCE; Schema: public; Owner: postgres
+--
+
+ALTER TABLE public.account_sub ALTER COLUMN id ADD GENERATED BY DEFAULT AS IDENTITY (
+    SEQUENCE NAME public.account_auth_id_seq
+    START WITH 1
+    INCREMENT BY 1
+    NO MINVALUE
+    NO MAXVALUE
+    CACHE 1
+);
+
+
+--
+-- TOC entry 211 (class 1259 OID 24605)
+-- Name: account_ban; Type: TABLE; Schema: public; Owner: postgres
+--
+
+CREATE TABLE public.account_ban (
+    user_id integer NOT NULL,
+    title text,
+    reason text,
+    date text,
+    pass_origin text,
+    pass_block text
+);
+
+
+ALTER TABLE public.account_ban OWNER TO postgres;
+
+--
+-- TOC entry 212 (class 1259 OID 24610)
+-- Name: account_history; Type: TABLE; Schema: public; Owner: postgres
+--
+
+CREATE TABLE public.account_history (
+    report_id integer NOT NULL,
+    user_id integer,
+    title text,
+    reason text,
+    date date
+);
+
+
+ALTER TABLE public.account_history OWNER TO postgres;
+
+--
+-- TOC entry 213 (class 1259 OID 24615)
+-- Name: account_history_report_id_seq; Type: SEQUENCE; Schema: public; Owner: postgres
+--
+
+ALTER TABLE public.account_history ALTER COLUMN report_id ADD GENERATED ALWAYS AS IDENTITY (
+    SEQUENCE NAME public.account_history_report_id_seq
+    START WITH 1
+    INCREMENT BY 1
+    NO MINVALUE
+    NO MAXVALUE
+    CACHE 1
+);
+
+
+--
+-- TOC entry 214 (class 1259 OID 24616)
+-- Name: account_moderation; Type: TABLE; Schema: public; Owner: postgres
+--
+
+CREATE TABLE public.account_moderation (
+    id integer NOT NULL,
+    username text,
+    password text,
+    type text
+);
+
+
+ALTER TABLE public.account_moderation OWNER TO postgres;
+
+--
+-- TOC entry 215 (class 1259 OID 24621)
+-- Name: account_moderation_id_seq; Type: SEQUENCE; Schema: public; Owner: postgres
+--
+
+ALTER TABLE public.account_moderation ALTER COLUMN id ADD GENERATED ALWAYS AS IDENTITY (
+    SEQUENCE NAME public.account_moderation_id_seq
+    START WITH 1
+    INCREMENT BY 1
+    NO MINVALUE
+    NO MAXVALUE
+    CACHE 1
+);
+
+
+--
+-- TOC entry 254 (class 1259 OID 29474)
+-- Name: airou_id_seq; Type: SEQUENCE; Schema: public; Owner: postgres
+--
+
+CREATE SEQUENCE public.airou_id_seq
+    START WITH 1
+    INCREMENT BY 1
+    NO MINVALUE
+    NO MAXVALUE
+    CACHE 1;
+
+
+ALTER TABLE public.airou_id_seq OWNER TO postgres;
+
+--
+-- TOC entry 216 (class 1259 OID 24622)
+-- Name: characters; Type: TABLE; Schema: public; Owner: postgres
+--
+
+CREATE TABLE public.characters (
+    id integer NOT NULL,
+    user_id bigint,
+    is_female boolean,
+    is_new_character boolean,
+    name character varying(15),
+    unk_desc_string character varying(31),
+    gr public.uint16,
+    hrp public.uint16,
+    weapon_type public.uint16,
+    last_login integer,
+    savedata bytea,
+    decomyset bytea,
+    hunternavi bytea,
+    otomoairou bytea,
+    partner bytea,
+    platebox bytea,
+    platedata bytea,
+    platemyset bytea,
+    rengokudata bytea,
+    savemercenary bytea,
+    restrict_guild_scout boolean DEFAULT false NOT NULL,
+    minidata bytea,
+    gacha_trial integer,
+    gacha_prem integer,
+    gacha_items bytea,
+    daily_time timestamp without time zone,
+    frontier_points integer,
+    netcafe_points integer,
+    house_info bytea,
+    login_boost bytea,
+    skin_hist bytea,
+    kouryou_point integer,
+    gcp integer,
+    trophy bytea,
+    guild_post_checked timestamp without time zone DEFAULT now() NOT NULL,
+    time_played integer DEFAULT 0 NOT NULL,
+    weapon_id integer DEFAULT 0 NOT NULL,
+    house bytea,
+    scenariodata bytea,
+    savefavoritequest bytea,
+    friends text DEFAULT ''::text NOT NULL,
+    blocked text DEFAULT ''::text NOT NULL,
+    deleted boolean DEFAULT false NOT NULL
+);
+
+
+ALTER TABLE public.characters OWNER TO postgres;
+
+--
+-- TOC entry 217 (class 1259 OID 24631)
+-- Name: characters_id_seq; Type: SEQUENCE; Schema: public; Owner: postgres
+--
+
+CREATE SEQUENCE public.characters_id_seq
+    AS integer
+    START WITH 1
+    INCREMENT BY 1
+    NO MINVALUE
+    NO MAXVALUE
+    CACHE 1;
+
+
+ALTER TABLE public.characters_id_seq OWNER TO postgres;
+
+--
+-- TOC entry 3694 (class 0 OID 0)
+-- Dependencies: 217
+-- Name: characters_id_seq; Type: SEQUENCE OWNED BY; Schema: public; Owner: postgres
+--
+
+ALTER SEQUENCE public.characters_id_seq OWNED BY public.characters.id;
+
+
+--
+-- TOC entry 252 (class 1259 OID 29454)
+-- Name: distribution; Type: TABLE; Schema: public; Owner: postgres
+--
+
+CREATE TABLE public.distribution (
+    id integer NOT NULL,
+    character_id integer,
+    type integer NOT NULL,
+    deadline timestamp without time zone,
+    event_name text DEFAULT 'GM Gift!'::text NOT NULL,
+    description text DEFAULT '~C05You received a gift!'::text NOT NULL,
+    times_acceptable integer DEFAULT 1 NOT NULL,
+    min_hr integer DEFAULT 65535 NOT NULL,
+    max_hr integer DEFAULT 65535 NOT NULL,
+    min_sr integer DEFAULT 65535 NOT NULL,
+    max_sr integer DEFAULT 65535 NOT NULL,
+    min_gr integer DEFAULT 65535 NOT NULL,
+    max_gr integer DEFAULT 65535 NOT NULL,
+    data bytea NOT NULL
+);
+
+
+ALTER TABLE public.distribution OWNER TO postgres;
+
+--
+-- TOC entry 251 (class 1259 OID 29453)
+-- Name: distribution_id_seq; Type: SEQUENCE; Schema: public; Owner: postgres
+--
+
+CREATE SEQUENCE public.distribution_id_seq
+    AS integer
+    START WITH 1
+    INCREMENT BY 1
+    NO MINVALUE
+    NO MAXVALUE
+    CACHE 1;
+
+
+ALTER TABLE public.distribution_id_seq OWNER TO postgres;
+
+--
+-- TOC entry 3695 (class 0 OID 0)
+-- Dependencies: 251
+-- Name: distribution_id_seq; Type: SEQUENCE OWNED BY; Schema: public; Owner: postgres
+--
+
+ALTER SEQUENCE public.distribution_id_seq OWNED BY public.distribution.id;
+
+
+--
+-- TOC entry 253 (class 1259 OID 29471)
+-- Name: distributions_accepted; Type: TABLE; Schema: public; Owner: postgres
+--
+
+CREATE TABLE public.distributions_accepted (
+    distribution_id integer,
+    character_id integer
+);
+
+
+ALTER TABLE public.distributions_accepted OWNER TO postgres;
+
+--
+-- TOC entry 218 (class 1259 OID 24632)
+-- Name: event_week; Type: TABLE; Schema: public; Owner: postgres
+--
+
+CREATE TABLE public.event_week (
+    id integer NOT NULL,
+    event_id integer NOT NULL,
+    date_expiration integer NOT NULL
+);
+
+
+ALTER TABLE public.event_week OWNER TO postgres;
+
+--
+-- TOC entry 219 (class 1259 OID 24635)
+-- Name: fpoint_items; Type: TABLE; Schema: public; Owner: postgres
+--
+
+CREATE TABLE public.fpoint_items (
+    hash integer,
+    itemtype public.uint8,
+    itemid public.uint16,
+    quant public.uint16,
+    itemvalue public.uint16,
+    tradetype public.uint8
+);
+
+
+ALTER TABLE public.fpoint_items OWNER TO postgres;
+
+--
+-- TOC entry 220 (class 1259 OID 24638)
+-- Name: gacha_shop; Type: TABLE; Schema: public; Owner: postgres
+--
+
+CREATE TABLE public.gacha_shop (
+    hash bigint NOT NULL,
+    reqgr integer NOT NULL,
+    reqhr integer NOT NULL,
+    gachaname character varying(255) NOT NULL,
+    gachalink0 character varying(255) NOT NULL,
+    gachalink1 character varying(255) NOT NULL,
+    gachalink2 character varying(255) NOT NULL,
+    extraicon integer NOT NULL,
+    gachatype integer NOT NULL,
+    hideflag boolean NOT NULL
+);
+
+
+ALTER TABLE public.gacha_shop OWNER TO postgres;
+
+--
+-- TOC entry 221 (class 1259 OID 24643)
+-- Name: gacha_shop_items; Type: TABLE; Schema: public; Owner: postgres
+--
+
+CREATE TABLE public.gacha_shop_items (
+    shophash integer,
+    entrytype public.uint8,
+    itemhash integer NOT NULL,
+    currtype public.uint8,
+    currnumber public.uint16,
+    currquant public.uint16,
+    percentage public.uint16,
+    rarityicon public.uint8,
+    rollscount public.uint8,
+    itemcount public.uint8,
+    dailylimit public.uint8,
+    itemtype integer[],
+    itemid integer[],
+    quantity integer[]
+);
+
+
+ALTER TABLE public.gacha_shop_items OWNER TO postgres;
+
+--
+-- TOC entry 222 (class 1259 OID 24648)
+-- Name: gook; Type: TABLE; Schema: public; Owner: postgres
+--
+
+CREATE TABLE public.gook (
+    id integer NOT NULL,
+    gook0 bytea,
+    gook1 bytea,
+    gook2 bytea,
+    gook3 bytea,
+    gook4 bytea
+);
+
+
+ALTER TABLE public.gook OWNER TO postgres;
+
+--
+-- TOC entry 223 (class 1259 OID 24653)
+-- Name: gook_id_seq; Type: SEQUENCE; Schema: public; Owner: postgres
+--
+
+CREATE SEQUENCE public.gook_id_seq
+    AS integer
+    START WITH 1
+    INCREMENT BY 1
+    NO MINVALUE
+    NO MAXVALUE
+    CACHE 1;
+
+
+ALTER TABLE public.gook_id_seq OWNER TO postgres;
+
+--
+-- TOC entry 3696 (class 0 OID 0)
+-- Dependencies: 223
+-- Name: gook_id_seq; Type: SEQUENCE OWNED BY; Schema: public; Owner: postgres
+--
+
+ALTER SEQUENCE public.gook_id_seq OWNED BY public.gook.id;
+
+
+--
+-- TOC entry 258 (class 1259 OID 29487)
+-- Name: guild_adventures; Type: TABLE; Schema: public; Owner: postgres
+--
+
+CREATE TABLE public.guild_adventures (
+    id integer NOT NULL,
+    guild_id integer NOT NULL,
+    destination integer NOT NULL,
+    charge integer DEFAULT 0 NOT NULL,
+    depart integer NOT NULL,
+    return integer NOT NULL,
+    collected_by text DEFAULT ''::text NOT NULL
+);
+
+
+ALTER TABLE public.guild_adventures OWNER TO postgres;
+
+--
+-- TOC entry 257 (class 1259 OID 29486)
+-- Name: guild_adventures_id_seq; Type: SEQUENCE; Schema: public; Owner: postgres
+--
+
+CREATE SEQUENCE public.guild_adventures_id_seq
+    AS integer
+    START WITH 1
+    INCREMENT BY 1
+    NO MINVALUE
+    NO MAXVALUE
+    CACHE 1;
+
+
+ALTER TABLE public.guild_adventures_id_seq OWNER TO postgres;
+
+--
+-- TOC entry 3697 (class 0 OID 0)
+-- Dependencies: 257
+-- Name: guild_adventures_id_seq; Type: SEQUENCE OWNED BY; Schema: public; Owner: postgres
+--
+
+ALTER SEQUENCE public.guild_adventures_id_seq OWNED BY public.guild_adventures.id;
+
+
+--
+-- TOC entry 256 (class 1259 OID 29479)
+-- Name: guild_alliances; Type: TABLE; Schema: public; Owner: postgres
+--
+
+CREATE TABLE public.guild_alliances (
+    id integer NOT NULL,
+    name character varying(24) NOT NULL,
+    created_at timestamp without time zone DEFAULT now() NOT NULL,
+    parent_id integer NOT NULL,
+    sub1_id integer,
+    sub2_id integer
+);
+
+
+ALTER TABLE public.guild_alliances OWNER TO postgres;
+
+--
+-- TOC entry 255 (class 1259 OID 29478)
+-- Name: guild_alliances_id_seq; Type: SEQUENCE; Schema: public; Owner: postgres
+--
+
+CREATE SEQUENCE public.guild_alliances_id_seq
+    AS integer
+    START WITH 1
+    INCREMENT BY 1
+    NO MINVALUE
+    NO MAXVALUE
+    CACHE 1;
+
+
+ALTER TABLE public.guild_alliances_id_seq OWNER TO postgres;
+
+--
+-- TOC entry 3698 (class 0 OID 0)
+-- Dependencies: 255
+-- Name: guild_alliances_id_seq; Type: SEQUENCE OWNED BY; Schema: public; Owner: postgres
+--
+
+ALTER SEQUENCE public.guild_alliances_id_seq OWNED BY public.guild_alliances.id;
+
+
+--
+-- TOC entry 224 (class 1259 OID 24654)
+-- Name: guild_applications; Type: TABLE; Schema: public; Owner: postgres
+--
+
+CREATE TABLE public.guild_applications (
+    id integer NOT NULL,
+    guild_id integer NOT NULL,
+    character_id integer NOT NULL,
+    actor_id integer NOT NULL,
+    application_type public.guild_application_type NOT NULL,
+    created_at timestamp without time zone DEFAULT now() NOT NULL
+);
+
+
+ALTER TABLE public.guild_applications OWNER TO postgres;
+
+--
+-- TOC entry 225 (class 1259 OID 24658)
+-- Name: guild_applications_id_seq; Type: SEQUENCE; Schema: public; Owner: postgres
+--
+
+CREATE SEQUENCE public.guild_applications_id_seq
+    AS integer
+    START WITH 1
+    INCREMENT BY 1
+    NO MINVALUE
+    NO MAXVALUE
+    CACHE 1;
+
+
+ALTER TABLE public.guild_applications_id_seq OWNER TO postgres;
+
+--
+-- TOC entry 3699 (class 0 OID 0)
+-- Dependencies: 225
+-- Name: guild_applications_id_seq; Type: SEQUENCE OWNED BY; Schema: public; Owner: postgres
+--
+
+ALTER SEQUENCE public.guild_applications_id_seq OWNED BY public.guild_applications.id;
+
+
+--
+-- TOC entry 226 (class 1259 OID 24659)
+-- Name: guild_characters; Type: TABLE; Schema: public; Owner: postgres
+--
+
+CREATE TABLE public.guild_characters (
+    id integer NOT NULL,
+    guild_id bigint,
+    character_id bigint,
+    joined_at timestamp without time zone DEFAULT now(),
+    avoid_leadership boolean DEFAULT false NOT NULL,
+    order_index integer DEFAULT 1 NOT NULL
+);
+
+
+ALTER TABLE public.guild_characters OWNER TO postgres;
+
+--
+-- TOC entry 227 (class 1259 OID 24665)
+-- Name: guild_characters_id_seq; Type: SEQUENCE; Schema: public; Owner: postgres
+--
+
+CREATE SEQUENCE public.guild_characters_id_seq
+    AS integer
+    START WITH 1
+    INCREMENT BY 1
+    NO MINVALUE
+    NO MAXVALUE
+    CACHE 1;
+
+
+ALTER TABLE public.guild_characters_id_seq OWNER TO postgres;
+
+--
+-- TOC entry 3700 (class 0 OID 0)
+-- Dependencies: 227
+-- Name: guild_characters_id_seq; Type: SEQUENCE OWNED BY; Schema: public; Owner: postgres
+--
+
+ALTER SEQUENCE public.guild_characters_id_seq OWNED BY public.guild_characters.id;
+
+
+--
+-- TOC entry 262 (class 1259 OID 29505)
+-- Name: guild_hunts; Type: TABLE; Schema: public; Owner: postgres
+--
+
+CREATE TABLE public.guild_hunts (
+    id integer NOT NULL,
+    guild_id integer NOT NULL,
+    host_id integer NOT NULL,
+    destination integer NOT NULL,
+    level integer NOT NULL,
+    return integer NOT NULL,
+    acquired boolean DEFAULT false NOT NULL,
+    claimed boolean DEFAULT false NOT NULL,
+    hunters text DEFAULT ''::text NOT NULL,
+    treasure text DEFAULT ''::text NOT NULL,
+    hunt_data bytea NOT NULL,
+    cats_used text NOT NULL
+);
+
+
+ALTER TABLE public.guild_hunts OWNER TO postgres;
+
+--
+-- TOC entry 261 (class 1259 OID 29504)
+-- Name: guild_hunts_id_seq; Type: SEQUENCE; Schema: public; Owner: postgres
+--
+
+CREATE SEQUENCE public.guild_hunts_id_seq
+    AS integer
+    START WITH 1
+    INCREMENT BY 1
+    NO MINVALUE
+    NO MAXVALUE
+    CACHE 1;
+
+
+ALTER TABLE public.guild_hunts_id_seq OWNER TO postgres;
+
+--
+-- TOC entry 3701 (class 0 OID 0)
+-- Dependencies: 261
+-- Name: guild_hunts_id_seq; Type: SEQUENCE OWNED BY; Schema: public; Owner: postgres
+--
+
+ALTER SEQUENCE public.guild_hunts_id_seq OWNED BY public.guild_hunts.id;
+
+
+--
+-- TOC entry 260 (class 1259 OID 29498)
+-- Name: guild_meals; Type: TABLE; Schema: public; Owner: postgres
+--
+
+CREATE TABLE public.guild_meals (
+    id integer NOT NULL,
+    guild_id integer NOT NULL,
+    meal_id integer NOT NULL,
+    level integer NOT NULL,
+    expires integer NOT NULL
+);
+
+
+ALTER TABLE public.guild_meals OWNER TO postgres;
+
+--
+-- TOC entry 259 (class 1259 OID 29497)
+-- Name: guild_meals_id_seq; Type: SEQUENCE; Schema: public; Owner: postgres
+--
+
+CREATE SEQUENCE public.guild_meals_id_seq
+    AS integer
+    START WITH 1
+    INCREMENT BY 1
+    NO MINVALUE
+    NO MAXVALUE
+    CACHE 1;
+
+
+ALTER TABLE public.guild_meals_id_seq OWNER TO postgres;
+
+--
+-- TOC entry 3702 (class 0 OID 0)
+-- Dependencies: 259
+-- Name: guild_meals_id_seq; Type: SEQUENCE OWNED BY; Schema: public; Owner: postgres
+--
+
+ALTER SEQUENCE public.guild_meals_id_seq OWNED BY public.guild_meals.id;
+
+
+--
+-- TOC entry 228 (class 1259 OID 24666)
+-- Name: guild_posts; Type: TABLE; Schema: public; Owner: postgres
+--
+
+CREATE TABLE public.guild_posts (
+    id integer NOT NULL,
+    guild_id integer NOT NULL,
+    author_id integer NOT NULL,
+    post_type integer NOT NULL,
+    stamp_id integer NOT NULL,
+    title text NOT NULL,
+    body text NOT NULL,
+    created_at timestamp without time zone DEFAULT now() NOT NULL,
+    liked_by text DEFAULT ''::text NOT NULL
+);
+
+
+ALTER TABLE public.guild_posts OWNER TO postgres;
+
+--
+-- TOC entry 229 (class 1259 OID 24673)
+-- Name: guild_posts_id_seq; Type: SEQUENCE; Schema: public; Owner: postgres
+--
+
+CREATE SEQUENCE public.guild_posts_id_seq
+    AS integer
+    START WITH 1
+    INCREMENT BY 1
+    NO MINVALUE
+    NO MAXVALUE
+    CACHE 1;
+
+
+ALTER TABLE public.guild_posts_id_seq OWNER TO postgres;
+
+--
+-- TOC entry 3703 (class 0 OID 0)
+-- Dependencies: 229
+-- Name: guild_posts_id_seq; Type: SEQUENCE OWNED BY; Schema: public; Owner: postgres
+--
+
+ALTER SEQUENCE public.guild_posts_id_seq OWNED BY public.guild_posts.id;
+
+
+--
+-- TOC entry 230 (class 1259 OID 24674)
+-- Name: guilds; Type: TABLE; Schema: public; Owner: postgres
+--
+
+CREATE TABLE public.guilds (
+    id integer NOT NULL,
+    name character varying(24),
+    created_at timestamp without time zone DEFAULT now(),
+    leader_id integer NOT NULL,
+    main_motto integer DEFAULT 0,
+    rank_rp integer DEFAULT 0 NOT NULL,
+    comment character varying(255) DEFAULT ''::character varying NOT NULL,
+    festival_colour public.festival_colour DEFAULT 'none'::public.festival_colour,
+    icon bytea,
+    sub_motto integer DEFAULT 0,
+    item_box bytea,
+    event_rp integer DEFAULT 0 NOT NULL,
+    pugi_name_1 character varying(12) DEFAULT ''::character varying,
+    pugi_name_2 character varying(12) DEFAULT ''::character varying,
+    pugi_name_3 character varying(12) DEFAULT ''::character varying
+);
+
+
+ALTER TABLE public.guilds OWNER TO postgres;
+
+--
+-- TOC entry 231 (class 1259 OID 24686)
+-- Name: guilds_id_seq; Type: SEQUENCE; Schema: public; Owner: postgres
+--
+
+CREATE SEQUENCE public.guilds_id_seq
+    AS integer
+    START WITH 1
+    INCREMENT BY 1
+    NO MINVALUE
+    NO MAXVALUE
+    CACHE 1;
+
+
+ALTER TABLE public.guilds_id_seq OWNER TO postgres;
+
+--
+-- TOC entry 3704 (class 0 OID 0)
+-- Dependencies: 231
+-- Name: guilds_id_seq; Type: SEQUENCE OWNED BY; Schema: public; Owner: postgres
+--
+
+ALTER SEQUENCE public.guilds_id_seq OWNED BY public.guilds.id;
+
+
+--
+-- TOC entry 232 (class 1259 OID 24687)
+-- Name: history; Type: TABLE; Schema: public; Owner: postgres
+--
+
+CREATE TABLE public.history (
+    user_id integer,
+    admin_id integer,
+    report_id integer NOT NULL,
+    title text,
+    reason text
+);
+
+
+ALTER TABLE public.history OWNER TO postgres;
+
+--
+-- TOC entry 233 (class 1259 OID 24692)
+-- Name: login_boost_state; Type: TABLE; Schema: public; Owner: postgres
+--
+
+CREATE TABLE public.login_boost_state (
+    char_id bigint,
+    week_req public.uint8,
+    week_count public.uint8,
+    available boolean,
+    end_time integer,
+    "ID" integer NOT NULL
+);
+
+
+ALTER TABLE public.login_boost_state OWNER TO postgres;
+
+--
+-- TOC entry 234 (class 1259 OID 24695)
+-- Name: login_boost_state_ID_seq; Type: SEQUENCE; Schema: public; Owner: postgres
+--
+
+ALTER TABLE public.login_boost_state ALTER COLUMN "ID" ADD GENERATED ALWAYS AS IDENTITY (
+    SEQUENCE NAME public."login_boost_state_ID_seq"
+    START WITH 1
+    INCREMENT BY 1
+    NO MINVALUE
+    NO MAXVALUE
+    CACHE 1
+);
+
+
+--
+-- TOC entry 235 (class 1259 OID 24696)
+-- Name: lucky_box_state; Type: TABLE; Schema: public; Owner: postgres
+--
+
+CREATE TABLE public.lucky_box_state (
+    char_id bigint,
+    shophash integer NOT NULL,
+    used_itemhash integer[]
+);
+
+
+ALTER TABLE public.lucky_box_state OWNER TO postgres;
+
+--
+-- TOC entry 236 (class 1259 OID 24701)
+-- Name: mail; Type: TABLE; Schema: public; Owner: postgres
+--
+
+CREATE TABLE public.mail (
+    id integer NOT NULL,
+    sender_id integer NOT NULL,
+    recipient_id integer NOT NULL,
+    subject character varying DEFAULT ''::character varying NOT NULL,
+    body character varying DEFAULT ''::character varying NOT NULL,
+    read boolean DEFAULT false NOT NULL,
+    attached_item_received boolean DEFAULT false NOT NULL,
+    attached_item integer,
+    attached_item_amount integer DEFAULT 1 NOT NULL,
+    is_guild_invite boolean DEFAULT false NOT NULL,
+    created_at timestamp without time zone DEFAULT now() NOT NULL,
+    deleted boolean DEFAULT false NOT NULL
+);
+
+
+ALTER TABLE public.mail OWNER TO postgres;
+
+--
+-- TOC entry 237 (class 1259 OID 24714)
+-- Name: mail_id_seq; Type: SEQUENCE; Schema: public; Owner: postgres
+--
+
+CREATE SEQUENCE public.mail_id_seq
+    AS integer
+    START WITH 1
+    INCREMENT BY 1
+    NO MINVALUE
+    NO MAXVALUE
+    CACHE 1;
+
+
+ALTER TABLE public.mail_id_seq OWNER TO postgres;
+
+--
+-- TOC entry 3705 (class 0 OID 0)
+-- Dependencies: 237
+-- Name: mail_id_seq; Type: SEQUENCE OWNED BY; Schema: public; Owner: postgres
+--
+
+ALTER SEQUENCE public.mail_id_seq OWNED BY public.mail.id;
+
+
+--
+-- TOC entry 238 (class 1259 OID 24715)
+-- Name: normal_shop_items; Type: TABLE; Schema: public; Owner: postgres
+--
+
+CREATE TABLE public.normal_shop_items (
+    shoptype integer,
+    shopid integer,
+    itemhash integer NOT NULL,
+    itemid public.uint16,
+    points public.uint16,
+    tradequantity public.uint16,
+    rankreqlow public.uint16,
+    rankreqhigh public.uint16,
+    rankreqg public.uint16,
+    storelevelreq public.uint16,
+    maximumquantity public.uint16,
+    boughtquantity public.uint16,
+    roadfloorsrequired public.uint16,
+    weeklyfataliskills public.uint16,
+    enable_weeks character varying(8)
+);
+
+
+ALTER TABLE public.normal_shop_items OWNER TO postgres;
+
+--
+-- TOC entry 239 (class 1259 OID 24718)
+-- Name: questlists; Type: TABLE; Schema: public; Owner: postgres
+--
+
+CREATE TABLE public.questlists (
+    ind integer NOT NULL,
+    questlist bytea
+);
+
+
+ALTER TABLE public.questlists OWNER TO postgres;
+
+--
+-- TOC entry 240 (class 1259 OID 24723)
+-- Name: raviregister; Type: TABLE; Schema: public; Owner: postgres
+--
+
+CREATE TABLE public.raviregister (
+    id integer NOT NULL,
+    refid integer NOT NULL,
+    nextravi integer NOT NULL,
+    ravistarted integer,
+    raviposttime integer,
+    ravitype integer,
+    maxplayers integer,
+    ravikilled integer,
+    carvequest integer,
+    register1 integer,
+    register2 integer,
+    register3 integer,
+    register4 integer,
+    register5 integer
+);
+
+
+ALTER TABLE public.raviregister OWNER TO postgres;
+
+--
+-- TOC entry 241 (class 1259 OID 24726)
+-- Name: raviregister_id_seq; Type: SEQUENCE; Schema: public; Owner: postgres
+--
+
+CREATE SEQUENCE public.raviregister_id_seq
+    START WITH 1
+    INCREMENT BY 1
+    NO MINVALUE
+    MAXVALUE 2147483647
+    CACHE 1;
+
+
+ALTER TABLE public.raviregister_id_seq OWNER TO postgres;
+
+--
+-- TOC entry 3706 (class 0 OID 0)
+-- Dependencies: 241
+-- Name: raviregister_id_seq; Type: SEQUENCE OWNED BY; Schema: public; Owner: postgres
+--
+
+ALTER SEQUENCE public.raviregister_id_seq OWNED BY public.raviregister.id;
+
+
+--
+-- TOC entry 242 (class 1259 OID 24727)
+-- Name: ravistate; Type: TABLE; Schema: public; Owner: postgres
+--
+
+CREATE TABLE public.ravistate (
+    id integer NOT NULL,
+    refid integer NOT NULL,
+    phase1hp integer NOT NULL,
+    phase2hp integer,
+    phase3hp integer,
+    phase4hp integer,
+    phase5hp integer,
+    phase6hp integer,
+    phase7hp integer,
+    phase8hp integer,
+    phase9hp integer,
+    unknown1 integer,
+    unknown2 integer,
+    unknown3 integer,
+    unknown4 integer,
+    unknown5 integer,
+    unknown6 integer,
+    unknown7 integer,
+    unknown8 integer,
+    unknown9 integer,
+    unknown10 integer,
+    unknown11 integer,
+    unknown12 integer,
+    unknown13 integer,
+    unknown14 integer,
+    unknown15 integer,
+    unknown16 integer,
+    unknown17 integer,
+    unknown18 integer,
+    unknown19 integer,
+    unknown20 integer,
+    damagemultiplier integer
+);
+
+
+ALTER TABLE public.ravistate OWNER TO postgres;
+
+--
+-- TOC entry 243 (class 1259 OID 24730)
+-- Name: ravistate_id_seq; Type: SEQUENCE; Schema: public; Owner: postgres
+--
+
+CREATE SEQUENCE public.ravistate_id_seq
+    START WITH 1
+    INCREMENT BY 1
+    NO MINVALUE
+    MAXVALUE 2147483647
+    CACHE 1;
+
+
+ALTER TABLE public.ravistate_id_seq OWNER TO postgres;
+
+--
+-- TOC entry 3707 (class 0 OID 0)
+-- Dependencies: 243
+-- Name: ravistate_id_seq; Type: SEQUENCE OWNED BY; Schema: public; Owner: postgres
+--
+
+ALTER SEQUENCE public.ravistate_id_seq OWNED BY public.ravistate.id;
+
+
+--
+-- TOC entry 244 (class 1259 OID 24731)
+-- Name: ravisupport; Type: TABLE; Schema: public; Owner: postgres
+--
+
+CREATE TABLE public.ravisupport (
+    id integer NOT NULL,
+    refid integer NOT NULL,
+    support1 integer NOT NULL,
+    support2 integer,
+    support3 integer,
+    support4 integer,
+    support5 integer,
+    support6 integer,
+    support7 integer,
+    support8 integer,
+    support9 integer,
+    support10 integer,
+    support11 integer,
+    support12 integer,
+    support13 integer,
+    support14 integer,
+    support15 integer,
+    support16 integer,
+    support17 integer,
+    support18 integer,
+    support19 integer,
+    support20 integer,
+    support21 integer,
+    support22 integer,
+    support23 integer,
+    support24 integer,
+    support25 integer
+);
+
+
+ALTER TABLE public.ravisupport OWNER TO postgres;
+
+--
+-- TOC entry 245 (class 1259 OID 24734)
+-- Name: ravisupport_id_seq; Type: SEQUENCE; Schema: public; Owner: postgres
+--
+
+CREATE SEQUENCE public.ravisupport_id_seq
+    START WITH 1
+    INCREMENT BY 1
+    NO MINVALUE
+    MAXVALUE 2147483647
+    CACHE 1;
+
+
+ALTER TABLE public.ravisupport_id_seq OWNER TO postgres;
+
+--
+-- TOC entry 3708 (class 0 OID 0)
+-- Dependencies: 245
+-- Name: ravisupport_id_seq; Type: SEQUENCE OWNED BY; Schema: public; Owner: postgres
+--
+
+ALTER SEQUENCE public.ravisupport_id_seq OWNED BY public.ravisupport.id;
+
+
+--
+-- TOC entry 246 (class 1259 OID 24735)
+-- Name: schema_migrations; Type: TABLE; Schema: public; Owner: postgres
+--
+
+CREATE TABLE public.schema_migrations (
+    version bigint NOT NULL,
+    dirty boolean NOT NULL
+);
+
+
+ALTER TABLE public.schema_migrations OWNER TO postgres;
+
+--
+-- TOC entry 265 (class 1259 OID 29667)
+-- Name: servers; Type: TABLE; Schema: public; Owner: postgres
+--
+
+CREATE TABLE public.servers (
+    server_id integer NOT NULL,
+    season integer NOT NULL,
+    current_players integer NOT NULL
+);
+
+
+ALTER TABLE public.servers OWNER TO postgres;
+
+--
+-- TOC entry 247 (class 1259 OID 24744)
+-- Name: shop_item_state; Type: TABLE; Schema: public; Owner: postgres
+--
+
+CREATE TABLE public.shop_item_state (
+    char_id bigint,
+    itemhash integer NOT NULL,
+    usedquantity integer,
+    week integer
+);
+
+
+ALTER TABLE public.shop_item_state OWNER TO postgres;
+
+--
+-- TOC entry 264 (class 1259 OID 29664)
+-- Name: sign_sessions; Type: TABLE; Schema: public; Owner: postgres
+--
+
+CREATE TABLE public.sign_sessions (
+    user_id integer NOT NULL,
+    char_id integer,
+    token character varying(16) NOT NULL,
+    server_id integer
+);
+
+
+ALTER TABLE public.sign_sessions OWNER TO postgres;
+
+--
+-- TOC entry 248 (class 1259 OID 24753)
+-- Name: stepup_state; Type: TABLE; Schema: public; Owner: postgres
+--
+
+CREATE TABLE public.stepup_state (
+    char_id bigint,
+    shophash integer NOT NULL,
+    step_progression integer,
+    step_time timestamp without time zone
+);
+
+
+ALTER TABLE public.stepup_state OWNER TO postgres;
+
+--
+-- TOC entry 263 (class 1259 OID 29526)
+-- Name: user_binaries; Type: TABLE; Schema: public; Owner: postgres
+--
+
+CREATE TABLE public.user_binaries (
+    id integer NOT NULL,
+    type2 bytea,
+    type3 bytea
+);
+
+
+ALTER TABLE public.user_binaries OWNER TO postgres;
+
+--
+-- TOC entry 249 (class 1259 OID 24756)
+-- Name: users; Type: TABLE; Schema: public; Owner: postgres
+--
+
+CREATE TABLE public.users (
+    id integer NOT NULL,
+    username text NOT NULL,
+    password text NOT NULL,
+    item_box bytea,
+    rights integer DEFAULT 14 NOT NULL,
+    last_character integer DEFAULT 0
+);
+
+
+ALTER TABLE public.users OWNER TO postgres;
+
+--
+-- TOC entry 250 (class 1259 OID 24762)
+-- Name: users_id_seq; Type: SEQUENCE; Schema: public; Owner: postgres
+--
+
+CREATE SEQUENCE public.users_id_seq
+    AS integer
+    START WITH 1
+    INCREMENT BY 1
+    NO MINVALUE
+    NO MAXVALUE
+    CACHE 1;
+
+
+ALTER TABLE public.users_id_seq OWNER TO postgres;
+
+--
+-- TOC entry 3709 (class 0 OID 0)
+-- Dependencies: 250
+-- Name: users_id_seq; Type: SEQUENCE OWNED BY; Schema: public; Owner: postgres
+--
+
+ALTER SEQUENCE public.users_id_seq OWNED BY public.users.id;
+
+
+--
+-- TOC entry 3344 (class 2604 OID 24763)
+-- Name: characters id; Type: DEFAULT; Schema: public; Owner: postgres
+--
+
+ALTER TABLE ONLY public.characters ALTER COLUMN id SET DEFAULT nextval('public.characters_id_seq'::regclass);
+
+
+--
+-- TOC entry 3384 (class 2604 OID 29457)
+-- Name: distribution id; Type: DEFAULT; Schema: public; Owner: postgres
+--
+
+ALTER TABLE ONLY public.distribution ALTER COLUMN id SET DEFAULT nextval('public.distribution_id_seq'::regclass);
+
+
+--
+-- TOC entry 3348 (class 2604 OID 24764)
+-- Name: gook id; Type: DEFAULT; Schema: public; Owner: postgres
+--
+
+ALTER TABLE ONLY public.gook ALTER COLUMN id SET DEFAULT nextval('public.gook_id_seq'::regclass);
+
+
+--
+-- TOC entry 3396 (class 2604 OID 29490)
+-- Name: guild_adventures id; Type: DEFAULT; Schema: public; Owner: postgres
+--
+
+ALTER TABLE ONLY public.guild_adventures ALTER COLUMN id SET DEFAULT nextval('public.guild_adventures_id_seq'::regclass);
+
+
+--
+-- TOC entry 3394 (class 2604 OID 29482)
+-- Name: guild_alliances id; Type: DEFAULT; Schema: public; Owner: postgres
+--
+
+ALTER TABLE ONLY public.guild_alliances ALTER COLUMN id SET DEFAULT nextval('public.guild_alliances_id_seq'::regclass);
+
+
+--
+-- TOC entry 3350 (class 2604 OID 24765)
+-- Name: guild_applications id; Type: DEFAULT; Schema: public; Owner: postgres
+--
+
+ALTER TABLE ONLY public.guild_applications ALTER COLUMN id SET DEFAULT nextval('public.guild_applications_id_seq'::regclass);
+
+
+--
+-- TOC entry 3354 (class 2604 OID 24766)
+-- Name: guild_characters id; Type: DEFAULT; Schema: public; Owner: postgres
+--
+
+ALTER TABLE ONLY public.guild_characters ALTER COLUMN id SET DEFAULT nextval('public.guild_characters_id_seq'::regclass);
+
+
+--
+-- TOC entry 3400 (class 2604 OID 29508)
+-- Name: guild_hunts id; Type: DEFAULT; Schema: public; Owner: postgres
+--
+
+ALTER TABLE ONLY public.guild_hunts ALTER COLUMN id SET DEFAULT nextval('public.guild_hunts_id_seq'::regclass);
+
+
+--
+-- TOC entry 3399 (class 2604 OID 29501)
+-- Name: guild_meals id; Type: DEFAULT; Schema: public; Owner: postgres
+--
+
+ALTER TABLE ONLY public.guild_meals ALTER COLUMN id SET DEFAULT nextval('public.guild_meals_id_seq'::regclass);
+
+
+--
+-- TOC entry 3357 (class 2604 OID 24767)
+-- Name: guild_posts id; Type: DEFAULT; Schema: public; Owner: postgres
+--
+
+ALTER TABLE ONLY public.guild_posts ALTER COLUMN id SET DEFAULT nextval('public.guild_posts_id_seq'::regclass);
+
+
+--
+-- TOC entry 3365 (class 2604 OID 24768)
+-- Name: guilds id; Type: DEFAULT; Schema: public; Owner: postgres
+--
+
+ALTER TABLE ONLY public.guilds ALTER COLUMN id SET DEFAULT nextval('public.guilds_id_seq'::regclass);
+
+
+--
+-- TOC entry 3377 (class 2604 OID 24769)
+-- Name: mail id; Type: DEFAULT; Schema: public; Owner: postgres
+--
+
+ALTER TABLE ONLY public.mail ALTER COLUMN id SET DEFAULT nextval('public.mail_id_seq'::regclass);
+
+
+--
+-- TOC entry 3378 (class 2604 OID 24770)
+-- Name: raviregister id; Type: DEFAULT; Schema: public; Owner: postgres
+--
+
+ALTER TABLE ONLY public.raviregister ALTER COLUMN id SET DEFAULT nextval('public.raviregister_id_seq'::regclass);
+
+
+--
+-- TOC entry 3379 (class 2604 OID 24771)
+-- Name: ravistate id; Type: DEFAULT; Schema: public; Owner: postgres
+--
+
+ALTER TABLE ONLY public.ravistate ALTER COLUMN id SET DEFAULT nextval('public.ravistate_id_seq'::regclass);
+
+
+--
+-- TOC entry 3380 (class 2604 OID 24772)
+-- Name: ravisupport id; Type: DEFAULT; Schema: public; Owner: postgres
+--
+
+ALTER TABLE ONLY public.ravisupport ALTER COLUMN id SET DEFAULT nextval('public.ravisupport_id_seq'::regclass);
+
+
+--
+-- TOC entry 3381 (class 2604 OID 24774)
+-- Name: users id; Type: DEFAULT; Schema: public; Owner: postgres
+--
+
+ALTER TABLE ONLY public.users ALTER COLUMN id SET DEFAULT nextval('public.users_id_seq'::regclass);
+
+
+--
+-- TOC entry 3633 (class 0 OID 24605)
+-- Dependencies: 211
+-- Data for Name: account_ban; Type: TABLE DATA; Schema: public; Owner: postgres
+--
+
+COPY public.account_ban (user_id, title, reason, date, pass_origin, pass_block) FROM stdin;
+\.
+
+
+--
+-- TOC entry 3634 (class 0 OID 24610)
+-- Dependencies: 212
+-- Data for Name: account_history; Type: TABLE DATA; Schema: public; Owner: postgres
+--
+
+COPY public.account_history (report_id, user_id, title, reason, date) FROM stdin;
+\.
+
+
+--
+-- TOC entry 3636 (class 0 OID 24616)
+-- Dependencies: 214
+-- Data for Name: account_moderation; Type: TABLE DATA; Schema: public; Owner: postgres
+--
+
+COPY public.account_moderation (id, username, password, type) FROM stdin;
+\.
+
+
+--
+-- TOC entry 3631 (class 0 OID 24599)
+-- Dependencies: 209
+-- Data for Name: account_sub; Type: TABLE DATA; Schema: public; Owner: postgres
+--
+
+COPY public.account_sub (id, discord_id, erupe_account, erupe_password, date_inscription, country, presentation) FROM stdin;
+\.
+
+
+--
+-- TOC entry 3638 (class 0 OID 24622)
+-- Dependencies: 216
+-- Data for Name: characters; Type: TABLE DATA; Schema: public; Owner: postgres
+--
+
+COPY public.characters (id, user_id, is_female, is_new_character, name, unk_desc_string, gr, hrp, weapon_type, last_login, savedata, decomyset, hunternavi, otomoairou, partner, platebox, platedata, platemyset, rengokudata, savemercenary, restrict_guild_scout, minidata, gacha_trial, gacha_prem, gacha_items, daily_time, frontier_points, netcafe_points, house_info, login_boost, skin_hist, kouryou_point, gcp, trophy, guild_post_checked, time_played, weapon_id, house, scenariodata, savefavoritequest, friends, blocked, deleted) FROM stdin;
+2	2	t	f	mr.oinkers		0	299	1	1662946995	\\x636d70203230313130313133202020000050010001173d710001ffff6d722e6f696e6b657273004abe322300015279120001c1ff400102e0d22000022408000a587031000e98242200043c000b0400024800048003000270080013b707c0130002400001b03208a003011e08018001000104010606000d010609000d01061d000d0106d3000d01067801000c01064811000c01067401000c01067d01000c01061a000d010631000d01068902000c0106d302000c0106d402000c01065e03000c01068d0a000c0106c10a000c01067910000c0106a91a000c0106b01a000c0106261e000c01064221000c010664000d0106dd02000c01061e02000c01064002000c01069903000c0106a0000d0106cb000d0106da04000c0106ef000d0106c701000c01060101000c01061402000c01066d0f000c01061713000c01063f1a000c01063821000c010701000104000b010702000104000b01070b000104000b01070b000114000b01070b000d01070d000d01076c000d01020f000d010210000d010234000106000b010243000102000b0102df000101000b01020101000c0102c40e06000b01020704000c0102fb0902000b010328000104000b01033c000101000b010324000101000b0103ea000d01038d000101000b0103de000104000b0103140101000b0103a50c01000b0103340803000b010407000d01040f000102000b01043a000101000b0104dc000d0104ee000d0104a00c01000b0104270802000b01050d000d010512000d010528000d0105d8000d01053a0d01000b0105c60802000b01000110000d01000127000101000b01000112000d010001d8000d010001a00c000c0100012c0802000b0106de08000c0106571b000c010759000d0107f80524000b01033c01000c0107370584000b0107ba000d010771000d0107ac00ff00ff00ff00ff00ff00ff00ff00ff00ff00ff00ff00ff00ff00ff00ff00ff00ff00ff00ff00ff00ff00ff00ff00ff00ff00ff00ff00ff00ff00ff00ff00ff00ff00ff00ff00ff00ff00ff00ff00ff00ff00ff00ff00ff00ff00ff00ff00ff00ff00ff00ff00ff00ff00ff00ff00ff00ff00ff00ff00ff00ff00ff00ff00ff00ff00ff00ff00ff00ff00ff00ff00ff00ff00ff00ff00ff00ff00ff00ff00ff00ff00ff00ff00ff00ff00ff00ff00ff00ff00ff00ff00ff00ff00ff00ff00ff00ff00ff00ff00ff00ff00ff00ff00ff00ff00ff00ff00ff00ff00ff00ff00ff00ff00ff00ff00ff00ff00ff00ff00ff00ff00ff00ff00ff00ff00ff00ff00ff00ff00ff00ff00ff00ff00ff00ff00ff00ff00ff00ff00ff00ff00ff00ff00ff00ff00ff00ff00ff00ff00ff00ff00ff00ff00ff00ff00ff00ff00ff00ff00ff00ff00ff00ff00ff00ff00ff00ff00ff00ff00ff00ff00ff00ff00ff00ff00ff00ff00ff00ff00ff00ff00ff00ff00ff00ff00ff00ff00ff00ff00ff00ff00ff00ff00ff00ff00ff00ff00ff00ff00ff00ff00ff00ff00ff00ff00ff00ff00ff00ff00ff00ff00ff00ff00ff00ff00ff00ff00ff00ff00ff00ff00ff00ff00ff00ff00ff00ff00ff00ff00ff00ff00ff00ff00ff00ff00ff00ff00ff00ff00ff00ff00ff00ff00ff00ff00ff00ff00ff00ff00ff00ff00ff00ff00ff00ff00ff00ff00ff00ff00ff00ff00ff00ff00ff00ff00ff00ff00ff00ff00ff00ff00ff00ff00ff00ff00ff00c1010001010005020001010005030001010005040001010005050001010005070001070300040800011100050b00013700050c00010200050d00010c00050f00015a00051000015900051200015b00051300015900051500010400051600010f00051b00015f00051c00016100051d0001e70300041d00011f0300041e0001030005210001e70300042200015c0005270001e70300042700016a0300042800011000052900010200052c00010500052d00010a00052e00010b00053200010100053d00012c0005fb130a0005460001e70300044600016e03000c480001b60300044900010a00054a00010100054c00010200054d00011c00054e00010900054f0001040005500001740005510001010005550001dd0300045a00010b00055d0001030005da056100055f00010100056300011d0005640001740005650001370005670001210100046800016300056900017a00056a00017800056b00013c00056c0001f000056d00013e00056e00013400056f00010600057100010100057500013c00057700013c00057800010200057a00011500057b00010600057e00010e00057f00010300058000010100058200010100058800010100058900014600058a00011e00058b00013700058c00011e00058e00010200058f00010f00059500010100059600010200059700010200059800010500059900010100059a00010d00059b0001050005ac0001120005ae0001020005b20001010005b3000101000566077900051015960005601f020005b4000104030004b500011e0005b60001070005b70001150005b800010e0005b90001050005bb0001120005bc00010f0005be0001140005c00001030005ec0d010005ed0d020005ee0d020005ef0d01000597123200059812040005c40001090005c50001030005c70001130005cb0001050005ae03010005b503030005f50d010005cc00010a00057c06030005ce000183030004cf000182030004d30001020005d40001460005d500011800059a120f00059b121b00059c12040005eb2d020005d60001040005d70001420005d80001430005d900010f0005da0001120005db0001060005dc0001080005dd00010b0005de00010500059903050005e100010c0005e200010900059a03010005e40001080005ab0301000575060a00057606100005770602000578061200057906030005e90d0700059d122500059e120900059f12010005a9140c0005aa14030005ab14010005eb0001010005f00001020005f10001030005f60001030005f700010400059b030200057b06020005941207000595120400059612010005ff00010a00050301020005040116000505010700050601290005070101000508010f00050a010300059c030100059e030d0005af03030005e40d170005e50d020005e60d0b0005e70d040005a012110005a1120b0005a2121600050d017f00051101010005150107000516010d000517010100051a010600051b010600051e010800051f01020005200101000521010200052801010005b603080005320111000534010a0005b703010005350102000536010200053701030005ba03010005380101000539010a00053a010800053b010600053c010500053e010100053f0106000540010c000541011000054201e703000442010600054301e703000443017700054901180005be030100054c010200054d01080005bb03070005bd030a00055001050005fb01040005fc01010005fe010700060203000502020100050402010005050202000509020900050a020900050b021f00050c020200050d020400050e020a0005540707000555070900055607010005580701000559070200055a070200055b070200055c070200055e130900055f130600056013060005611301000562130500056313020005641313000565130800056613020005671302000568130300055501050005580102000559010100055a010400055f0104000560010c0005620102000563010600056401050005a203010005a4030100056b011300056c010700056e01010005700102000572010300057601060005780102000579010400057a0101000556021c00055702050005580204000559020400055a020400055b020300055c020a0005e903040005ea03080005eb03030005ec03030005ef03020005f003020005f103030005f2030d00052f04040005300402000531040300057c010d00057f010b000580010800058601010005f4030e0005f5030a0005f603020005f703010005520202000553020100055402060005550201000588010700058a010600058c010f00058e010100058f0102000590010d0005920104000594010b000595010e00059601120005cd030600059701030005ce03010005980102000599010b00059c010b00059d010700059e010400059f01070005a001020005a101070005a301090005ac01050005ae01010005b201020005b401010005b701010005b801020005b901030005bb01010005bc01060005bd01010005be01020005c001060005c201050005c3010e0005c401030005c501010005c601020005d601040005d701050005d801030005d901020005db01080005dc01020005d9030a0005da03020005db03020005dc03010005dd03040005de03090005df03010005e003050005e103020005e203060005e303040005e503020005e603030005e80301000516040600051704050005180401000519040100051d040400051e040200051f04020005200402000521040200052204010005230403000524040100054c070200054d070100054e070200054f07020005500702000551070400055207020005810610000582060800058406060005850601000586060c00058706020005880601000589060400058a060100058c060200058a0b0500058b0b0100058d0b0300058f0b020005900b010005910b01000503070a00050407010005060705000507070400050907010005550a0a0005560a080005570a020005580a030005590a0100055a0a030005d10d070005d20d080005d30d070005d40d010005d50d020005d60d010005d70d03000563230300056423030005652303000567230100056923010005f70d010005fb0d020005190001020005ca01010005cb01010005cc01030005cd01030005ce01180005cf01010005d0010b0005d101030005d201010005d301010005100204000512020f00051302010005140209000518020600051b020100051c020200051f02030005250409000526040200052a04030005c104020005c604010005b014250005b114780005b214540005b314b00005b4149b0005b514080005b714160005b814050005b9142d0005ba14020005bd14060005be14050005bf14060005c014040005c114010005c214030005c314010005c414010005c514010005c614040005c9140100056a160a00056b160600056c160500056d16030005dd01090005de01020005df01040005e001120005e1010400052402020005250205000526020200052702010005280204000529020500052a020200052b020100052c020200052d020800052e020c00052f02010005300205000532020200053502020005360202000539020800053a020500053f0205000540020300054102030005420203000543020200054d02010005e401020005e501070005e701040005e801060005900f0d0005910f290005920f100005930f1e0005940f060005950f050005960f0d0005970f0d0005990f0100059a0f0100053011050005eb01020005ec01050005ed01130005ef01010005f501070005f601050005f701020005ee04080005ef04050005f004050005f104050005f204020005f304040005f404030005f504020005f704020005f80402000509050300050a050200050b050200050c050300050d050200050e050100050f0503000510050200051105020005400403000541040200051e050100052a050100052b05050005300501000536050100053c050300053d05040005a305010005a405020005bc05050005a80506000501338c000502337f00050333eb00050433cb0005053306000506330d00050733030005ae05010005b3050100057123010005f7071e00055e020200055f0203000567020100058f0203000590020c0005ab02010005bf02010005c602020005c702090005ca02020005cc02030005cd02060005ce02010005cf02030005d402020005d502060005dd02070005de02060005e002020005e102020005e202020005e302380005e402060005e502010005e802040005ea02010005ec02020005fb02010005140301000518030100051a031d00051b030400051c030a00051d03080005c005b60005e7150a0005e8150a00054d1d0400054f22010005f93a020005ff03020005ea05010005ec050100054a040100054b040100051f070100052e080200052f080100053008020005491312000558130a00ff00ff00ff00ff00ff00ff00ff00ff00ff00ff00ff00ff00ff00ff00ff00ff00ff00ff00ff00ff00ff00ff00ff00ff00ff00ff00ff00ff00ff00ff00ff00ff00ff00ff00ff00ff00ff00ff00ff00ff00ff00ff00ff00ff00ff00ff00ff00ff00ff00ff00ff00ff00ff00ff00ff00ff00ff00ff00ff00ff00ff00ff00ff00ff00ff00ff00ff00ff00ff00ff00ff00ff00ff00ff00ff00ff00ff00ff00ff00ff00ff00ff00ff00ff00ff00ff00ff00ff00ff00ff00ff00ff00ff00ff00ff00ff00ff00ff00ff00ff00ff00ff00ff00ff00ff00ff00ff00ff00ff00ff00ff00ff00ff00ff00ff00ff00ff00ff00ff00ff00ff00ff00ff00ff00ff00ff00ff00ff00ff00ff00ff00ff00ff00ff00ff00ff00ff00ff00ff00ff00ff00ff00ff00ff00ff00ff00ff00ff00ff00ff00ff00ff00ff00ff00ff00ff00ff00ff00ff00ff00ff00ff00ff00ff00ff00ff00ff00ff00ff00ff00ff00ff00ff00ff00ff00ff00ff00ff00ff00ff00ff00ff00ff00ff00ff00ff00ff00ff00ff00ff00ff00ff00ff00ff00ff00ff00ff00ff00ff00ff00567c002e4e3c0800a10107370584000b01000f0102fb0902000b0103000e0104000e0105000f3400010bf11cde020001801fa00001223840040002c0090001040001b42607040002c40001c001008b011300015000013400013d00014400014a0001145c80f7b2a5fc3ccf28cf28cf28cf28cf28cf28cf28cf28cf28cf28cf28cf28cf28cf28cf28cf28cf28cf28cf28cf28cf28cf28cf28cf28cf28cf280002cf2800ff00ff00ff00ff000f0200020200ff0044d040000205000d40001304001eff0082d000164a124d000e30dbf8553095f3550004400001340001b900016d00014200017800015c00034c00014d0009060005ffff0002ffffffffffff00050100068b1812000905c02b01000cbeb9ef7fff730520cff733acbaffaecd07dfe10f0001d0ff7fb3dbf87f1f8ac3e1f865e2cc0785f5ff5ff263871d5845bf45d5f5f74b50947b7dfccffbfbb9e05e35fe1f99f0ff75a60ff0fddfd8fbffffff8fef1d0508000180c2f430603f1580080002103d000f5e14c8e26f0001600001fe7f9ff780010001c0f77f86030001070c0008fe07f0ff00024200031cc8ff270001fe0340010c4170000404000718d108100100020400011400020200010100021b1c1c1c1b4444444444444444444430340606141406143030300005010f3301010101013333160101010100010e0e11431515150e0e0e0e0e00040b1a0b2121210b0b2121211a0b0b0b0029af1506000729ba0006666600020100031a05000789002cc16d000adfde0002dd3600ff0053e25902000d0400ff00ff00891e006388050002ed0b0002de19000281610002b7e6003220005f4a0f00021d2f00027c2b000281470002d22b001a050001060001ecff010800241400011700011200011200010800010200010900010500010900010700010e00010600013a00030100010100010100110100ff00ff00ff00ff00ff00ff00ff00ff00ff00ff00ff00ff00ff00d2704c0002b0827a00010d0085ffffffff02010004044600010808000102003973050508070102000948616c6b00035a01ff06ff010100046400050600010c00ff0062560001ffff340001ffffffffffff010005324100ff00ff00ff00ff00ff00ff00eeff00ff00ff00ff00ff00ff00ff00d9ff0007b2090300013a0d0006c00001ffff0001010002a5070300013b0f0006c10001feff00010100ff00ff00ff00ff00ff00ff00acff00070100012c0001cf000101000138000184030100015f0001b90301000197000198030100019c00015a0001010001b50001b000010100011f0001d3010100012c00010303010001380001990001010001dd00013203010001de00018901010001e300011402010001c900015e03010001bf0001b903010001c80001fe0001010001e40001680001010001e500017303010001f1000114030100016e000185020100017800018a010100018c0001a803010001f500012d010002120001220300021200019e0200021200019402000212000117030002120001f10100021200010d010002120001b3010002120001e801000212000170010002120001a000031200016002000212000139020002120001b80003120001050200021200013e0300021200012e030002120001750100021200015300031200018a020002120001dc0300021200018800031200013a030002120001c500031200010c030002120001c7030002120001c80300021200015c0003120001560200021200017101000212000156020002120001f4010002120001ff0100021200013402000212000142020002120001b2030002120001e600031200014a0300021200017e0300021200015a0200021200014c030002120001f40003120001090300021200018d010002120001920003120001fd0003120001f5010002120001f9010002120001e70200021200014201000212000141020002120001d4000312000111010002120001b702000212000167030002120001d00100021200016c010002120001b6030002120001600100021200019e030002120001390100021200015d01000212000107030002120001740003120001390300021200012503000212000184010002120001a80200021200013302000212000112030002120001fa0100021200016a02000212000112020002120001b80300021200011a0100021200012d0100021200010202010001120001d2010100011f0001b903000e40f0000809000f0505050505066300070100057e44000c0a0a0a0a0a0a00480d00010a00010300011a00010300010100010b00011900010100012300010400010300010800010600030700010500010200010500010800010500011500010400010400032d010001054dcfe615a2295600ff00340100610100ff00a86500097200096c00057200015b00097500016a00016800076900016e00017000099f00076600037100016900037300017a00017000036a00017700017a00016f00038100016500018e00016400096900017d00076400056b00017e000b6500016d00017000036300037300016300016600017700016c00016600076400016900016900016b00036000016e00016900056b00036b00037b000164000162002b7200ff00045f00095f00095d00056000015b00096400016a00016800076900016100015700097800075d00037100016400036c00017a00017000035d00017700015f00016500036a00016500015e00016400096900016700075f00056900015f000b6400015d00015900035000037300016300016500016700016c00015000075e00016900016900016b00036000016e000169000550000350000350000162000162002b7200ff00040700010300010800012700013300010300010300031e00030500011300014f00010b0001010001370005b80001030001010001010001350001bd00013400010100010400010300010c00014700050600011e00017b00030200030100010300030200010100010100030200010100010400010300030200010100010800010100010100012800030100010100010400011000012600013b00010300031100010200010b00010d0001010001010005010001020001060001010001020003010001010001020001030001010001030001280001ef00030200010100030100030100010100010100010600011400010c00030600032a000102000101002b01005f1800ff000201000501002d01001501000b0100170400ff00ff005773080b0001ffffff7f0008800d00030400070100100200040480000240000cb71402009f030303060704010205050007750008f5f5f5f5009c0c00030a00031b0003df0003490100020a00036e00036b00036600034e00037a00035c005a010008ff5f0d0099e0e0e2e0e0e0e0e2e0e0e00007010004010038010101010080feffffff0f00012000760800200100050101007a010003010030010100010800010200051300010400051000010400154700010200151500010500252300010100052400010100052500010100052600010100053239010065555345205448495300ff00d943010800032100012300014700012500013000039800019700050b0007ac00ff00ff00ff00ff00ff00820603000106010d01050001050300020600030300ff00ff00ff00093c00ff00ff00ff0026	\\x01030001835a8362836720310000000000000000000000000012004e0030003a0041004800000000000000000000000000000000000000000000000000000000000000000000000000000000ffff00000002835a83628367203200000000000000000000000000130050002e003d0044004a00000000000000000000000000000000000000000000000000000000000000000000000000000000ffff00000003835a836283672033000000000000000000000000001200500034003d0044004a00000000000000000000000000000000000000000000000000000000000000000000000000000000ffff0000	\\x01000000000000000000000000000000000000000000000000000000000000000000000000000000000001000700040007000400050003000300040005000400040005000400030004000400080001000100010001000100010001000100010001000100010001000100010001000200000000000000000000000000000000000000000000000000000000000000000002000000000000000000000000000000000000000000000000000000000000000000020000000000000000000000000000000000000000000000000000000000000000000100070004000400040004000400040000000000000000000000000000000000000002000000000000000000000000000000000000000000000000000000000000000000010000000000010001000000010001000000010001000100000001000000010000000100070004000400040007000400070004000400040004000400040004000000000000000000000000000000000001000000000000000000000000000000000000000000020000000000000000000000000000000000000000000000000000000000000000000200000000000000000000000000000000000000000000000000000000000000000001000300070007000700070007000500040000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000	\\x01636d7020323031313031313320202000010003700003010182cc82f182cc82f1000a0203000f010614ffffffff000102ab290106000188000d02000f03000f07ffffffff000755f413c00003a00106000128000c0102000123000c0103000123000c010200010e000c010300010e000c010300015f000c010200015f000c0106000188000c010300016c000c010200016c000c	\\x01636d7020323031313031313320202000000202280200010c0d757685ff417a656c000e040003ffffffffffffffffffff002102000f03000f04000f05000e01060d000ddd000107ff6400016400b125001f06002303000380000180000301008cb001060d000d0102c40e000c0102e207000c0103a50c000c0103780601000b0104a00c000c01046b06000c01053a0d000c01050a07000c010001a00c000c0100017006000c	\N	\\x636d702032303131303131332020200000ff00ff00ff00ff00ff00ff00ff00ff00ff00ff00ff00ff00ff00ff00ff00ff00ff00ff00ff00ff00ff00ff00ff00ff00ff00ff00ff00ff00ff00ff00ff00ff00ff00ff00ff00ff00ff00ff00ff00ff00ff00ff00ff00ff00ff00ff00ff00ff00ff00ff00ff00ff00ff00ff00ff00ff00ff00ff00ff00ff00ff00ff00ff00ff00ff00ff00ff00ff00ff00ff00ff00ff00ff00ff00ff00ff00ff00ff00ff00ff00ff00ff00ff00ff00ff00ff00ff00ff00ff00ff00ff00ff00ff00ff00ff00ff00ff00ff00ff00ff00ff00ff00ff00ff00ff00ff00ff00ff00ff00ff00ff00ff00ff00ff00ff00ff00ff00ff00ff00ff00ff00ff00ff00ff00ff00ff00ff00ff00ff00ff00ff00ff00ff00ff00ff00ff00ff00ff00ff00ff00ff00ff00ff00ff00ff00ff00ff00ff00ff00ff00ff00ff00ff00ff00ff00ff00ff00ff00ff00ff00ff00ff00ff00ff00ff00ff00ff00ff00ff00ff00ff00ff00ff00ff00ff00ff00ff00ff00ff00ff00ff00ff00ff00ff00ff00ff00ff00ff00ff00ff00ff00ff00ff00ff00ff00ff00ff00ff00ff00ff00ff00ff00ff00ff00ff00ff00ff00ff00ff00ff00ff00ff00ff00ff00ff00ff00ff00ff00ff00ff00ff00ff00ff00ff00ff00ff00ff00ff00ff00ff00ff00ff00ff00ff00ff00ff00ff00ff00ff00ff00ff00ff00ff00ff00ff00ff00ff00ff00ff00ff00ff00ff00ff00ff00ff00ff00ff00ff00ff00ff00ff00ff00ff00ff00ff00ff00ff00ff00ff00ff00ff00ff00ff00ff00ff00ff00ff00ff00ff00ff00ff00ff00ff00ff00ff00ff00ff00ff00ff00ff00ff00ff00ff00ff00ff00ff00ff00ff00ff00ff00ff00ff00ff00ff00ff00ff00ff00ff00ff00ff00ff00ff00ff00ff00ff00ff00ff00ff00ff00ff00ff00ff00ff00ff00ff00ff00ff00ff00ff00ff00ff00ff00ff00ff00ff00ff00ff00ff00ff00ff00ff00ff00ff00ff00ff00ff00ff00ff00ff00ff00ff00ff00ff00ff00ff00ff00ff00ff00ff00ff00ff00ff00ff00ff00ff00ff00ff00ff00ff00ff00ff00ff00ff00ff00ff00ff00ff00ff00ff00ff00ff00ff00ff00ff00ff00ff00ff00ff00ff00ff00ff00ff00ff00ff00ff00ff00ff00ff00ff00ff00ff00ff00ff00ff00ff00ff00ff00ff00ff00ff00ff00ff00ff00ff00ff00ff00ff00ff00ff00ff00ff00ff00ff00ff00ff00ff00ff00ff00ff00ff00ff00ff00d0	\N	\N	\N	f	\\x4d440000000000000000000000000000000000000000000000000000000000000000000000000000000000000a000000a10400000000000000000000000000000000000000000000000000000000000000000000dd360000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000	\N	\N	\N	\N	\N	\N	\N	\N	\\x0000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000800000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000800000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000	\N	37	\N	2022-06-27 08:28:35.32068	311	1335	\N	\\x00000000f0b8d80a0000	\\x010001000100010001000000000000			f
+1	1	t	f	Erza		0	299	4	1662952520	\\x636d70203230313130313133202020000050010100012b1222fbff45727a610050be3223000152200002c1bf40010001a0822000022408000a587031000e98242000043c0009400001040001404280000380070002b0080013b5c7c0130002400001b03308e40b011e0801000101000104010200010a06000b0102420903000b0102c40e06000b0102030102000b0102d2000d01064303000c0102e20705000b0102fe0903000b01026c0201001b0103390802000b01039b0703000b0103a50c06000b0103f3000d0103ce000104000b0103d4000d0103780601000b0103340803000b0103b8000106001b01042c08000c01048e0703000b0104a00c03000b0104ee000d0104cc000102001b01046b0601000b0104270803000b0104b6000104001b0105cb08000c01052d0803000b01053a0d03000b0105ed000d0105c8000102001b01050a0701000b0105c60803000b0105b2000102001b0100013108000c010001930703000b010001a00c03000b010001f0000d010001c8001d0100017006000c0100012c0803000b010001b2000101002b0106bd18004c01065916000c0106111c009c01063f1a002c0106aa1a000c01063d19005c0106241e00ff006d0106e401000c01068802000c01067f10001c0106c11a000c01064221000c0106f510000c0106a5000d01065802000c01065802000c01065403000c01065d01000c01060702000c0106ee000d01065301000c01065703000c01061214000c01064c00ff00ff00ff00ff00ff00ff00ff00ff00ff00ff00ff00ff00ff00ff00ff00ff00ff00ff00ff00ff00ff00ff00ff00ff00ff00ff00ff00ff00ff00ff00ff00ff00ff00ff00ff00ff00ff00ff00ff00ff00ff00ff00ff00ff00ff00ff00ff00ff00ff00ff00ff00ff00ff00ff00ff00ff00ff00ff00ff00ff00ff00ff00ff00ff00ff00ff00ff00ff00ff00ff00ff00ff00ff00ff00ff00ff00ff00ff00ff00ff00ff00ff00ff00ff00ff00ff00ff00ff00ff00ff00ff00ff00ff00ff00ff00ff00ff00ff00ff00ff00ff00ff00ff00ff00ff00ff00ff00ff00ff00ff00ff00ff00ff00ff00ff00ff00ff00ff00ff00ff00ff00ff00ff00ff00ff00ff00ff00ff00ff00ff00ff00ff00ff00ff00ff00ff00ff00ff00ff00ff00ff00ff00ff00ff00ff00ff00ff00ff00ff00ff00ff00ff00ff00ff00ff00ff00ff00ff00ff00ff00ff00ff00ff00ff00ff00ff00ff00ff00ff00ff00ff00ff00ff00ff00ff00ff00ff00ff00ff00ff00ff00ff00ff00ff00ff00ff00ff00ff00ff00ff00ff00ff00ff00ff00ff00ff00ff00ff00ff00ff00ff00ff00ff00ff00ff00ff00ff00ff00ff00ff00ff00ff00ff00ff00ff00ff00ff00ff00ff00ff00ff00ff00ff00ff00ff00ff00ff00ff00ff00ff00ff00ff00ff00ff00ff00ff00ff00ff00ff00ff00ff00ff00ff00ff00ff00ff00ff00ff00ff00ff00ff00ff00ff00ff00ff00ff00ff00ff00ff00ff00ff00ff00ff00ff00ff00ff00ff00ff00ff00ff00ff00ff00ff00ff00ff0100010100050200010100050300010100050400010100050500010100050700013000050800010a00050a00010100050b0001b300050c00010800050d00010e00050e00010100050f00010500051100010500051200010c00051400010100051500011300051600017c00051700010800051a00010100051b00010800051c00010200051d00010100052000010100052100012000052200012a00052300010100052500010100052600010100052700017b0200042800014d00052900010100052b00010100052c00012500052d00010900052e0001280005300001090005320001010005400001100005460001ac0300044700011200054900018400054a00011800054c00010100054d00016e00054e00016200054f00010600055000013a00055100010e0005520001020005540001010005550001ce0300045900010700055a00015d00055b00012600055d00011200055f0001080005630001820005640001b300056700013200057800010100058800010500058900012800058e00012700058f00011600059000010200059500010600059600014800059700013700059800012d00059900013600059a00013a00059b0001470005ac0001950005ae0001080005b200010100051015960005601f070005851f050005881f050005b40001230005b50001640005b60001160005b70001540005b80001440005b900010f0005ba0001050005bb0001200005bc0001380005bd00010d0005be0001170005c00001020005ec0d210005ed0d010005ee0d0d0005ef0d06000597127600059812070005c400012b0005c50001040005c60001040005c70001010005c80001010005c90001040005cb0001100005ae03040005b503070005f50d020005cc00011300057c06050005cd0001010005ce0001090005cf0001070005d00001020005d200010b0005d30001150005d400019e0005d500012d00059a121a00059b123600059c12210005d822020005d922020005d60001480005d70001810005d80001de0005d90001970005b103090005da00015a0005db0001170005dc00012a0005dd0001210005de00010200059903030005e100010d0005e200010d00059a03020005e40001360005ab03040005ac03030005750607000576060400057706020005780611000579060a0005e90d0c0005ea0d0500059d123e00059e12120005a914190005aa140f0005ea0001020005eb0001030005ec0001090005ed0001060005ef0001010005f00001010005f40001010005f60001030005f70001190005fd00010100059b03020005f60d03000594120d000595120400059612010005ff0001480005030105000504013d000505011e000506016d0005070109000508011400050a010100050b010300059c030600059e030f00059f03010005af03060005e40d620005e50d060005e60d050005e70d1b0005e80d0d0005a012150005a112160005a2121e0005d7220100050d015800050e010200050f01010005110105000515011e000516011f000517010400051a010300051b010b00051e016000051f01040005200115000521010500052a01010005ed22030005ef22090005f122060005f522030005fb220300052e010100052f01080005b6030a0005300101000532011a00053401150005b7030300053501060005b80301000536010500053701120005ba0305000538012a000539010f00053a01130005b9030400053b010c00053d010c00053e010200053f0104000540014c000541011b000542011f00054301860005440101000549011f0005bc0301000552010100055401020005be030200054b010100054d010100054e01030005bb03070005bd030700054f010700055001010005fb012b0005fc010d0005fe010b0005ff01060006021100050102030005020209000503020200050402010005050207000509020300050a020500050b020700050c020200050d020100050e0205000554070d000555070f000559070200055a070600055c070100055e133e00055f1308000560130600056113100005621313000563130d0005641339000565130d0005661301000567130100056913140005560109000557010a00055801040005c00301000559010200055a010e00055b010100055c010200055f010800056001100005620108000563010f00056401010005650101000566010100056801010005a203030005a4034200056b011600056c010b00056e010400057001020005720107000576010a000579010300057a0103000556020900055702010005580201000559020200055a020100055b020200055c02010005e903110005ea030a0005eb03020005ec03030005ed03010005ef03050005f103040005f203030005f303010005300401000531040200057c010b00057f0104000580010a0005f603070005f70304000552020200055302010005540202000555020100058801120005d100010100058a010400058c011d00058d010f00058e010400058f010500059001070005920103000594010b000595010e000596011f0005cd030b00059701120005ce03010005980107000599010d00059c010e00059d010700059e010300059f01110005a001020005a101010005a3010a0005a501010005ac01020005ae01010005b001070005b101020005b201010005d003020005b901040005bb01020005bc01020005be01020005c001050005c3010e0005c401020005c501040005c601030005c701010005d6010b0005d701040005d801030005d901040005d9030c0005da03010005db03080005dc03020005dd03030005de030e0005df03030005e003010005e203030005e303030005e403080005e503050005e80301000516041000051704080005180404000519040400051a040200051c040100051d040400051e040500051f04030005200402000521040100052204010005230402000524040100054c070300054d070200054e070200054f070100055007020005510702000552070200058106060005820604000584060500058506020005860604000587060100058a060100058c060100058a0b0700058b0b0500058c0b0100058d0b0300058f0b030005900b010005910b01000503070600050407060005050701000506070400050707030005080701000509070100056308140005550a150005560a150005570a050005580a080005590a0200055a0a060005d10d150005d20d140005d30d0d0005d40d020005d50d040005d60d020005d70d0100056323060005642304000565230100056923010005f70d030005f80d060005fa0d040005fb0d020005fc0d010005ca010a0005cb01040005cc010a0005cd01030005ce01240005cf01020005d0010c0005d1010a0005d201010005d30104000dcb0201000512021a0005130201000514021c0005110201000518021800051a020700051b020300051c020800051f020100052002010005d50302000521020100052202010005250411000527040100052a04030005b0143e0005b1143c0005b214130005b314980005b414790005b514030005b614020005b714230005b914360005ba14040005bd14050005be14060005c114040005c214080005c314040005c414020005c514010005c6140a0005c814020005c914050005ca140400056a160c00056b160c00056c160900056d160500056e16010005dd01050005de010d0005df01030005e1010800052602170005280203000529020300052a020200052d020800052e020700053002040005320201000534020200053502020005360201000539020e00053a020c00053f020800054002050005410201000542020400054302040005e301020005e401040005e501050005e601020005e701060005e801030005900f020005910f2b0005920f080005930f180005940f030005950f030005960f180005970f110005980f0100059a0f04000530110b0005eb01020005ec01080005ed01030005ef01010005e304010005e604020005e704020005eb04010005f104010005f204010005f404050005f504030005f704080005f804060005f904010005fa04020005fd0402000509050300050a050200050c050300050d050200050e050200050f05040005100503000511050200054004040005410403000542040200054c050100054e050200054f0503000550050200055105010005520501000554050200056005010005a205010005a305020005bc05110005a8050b00050133ba01000402339501000403335e01000404335201000405330c000506330b000507330100050833020005ac05010005ae05010005b005010005b105010005b30504000586331e00057123010005ac30320005ae30140005f7073c00055f020100056002010005630202000564020200056502010005680202000569020100056c020100058f020300059002110005bf02020005c602020005c7020c0005d502010005dd020b0005de02050005e002070005e302320005e402140005e802030005ea02010005ec02010005f202020005f702070005fb0201000511030100051a033400051b031400051c030a00051d031000058603010005c00593010004d31b320005ae12010005081502000509150100054d1d0200054f22020005eb050100054a040200054b040200052107020005d907010005da070100052e0803000556130a00057e1601000549131000055813050005ce02040005ca02030005cc02030005cd020400053008020005ab02010005ff03020005e5020100052b050300052c050300053c050500052a0506000530050100053d05010005ec05020005f2000101000d2007010005f800010100055301010005c1040a0005c504010005c6040100ff00ff00ff00ff00ff00ff00ff00ff00ff00ff00ff00ff00ff00ff00ff00ff00ff00ff00ff00ff00ff00ff00ff00ff00ff00ff00ff00ff00ff00ff00ff00ff00ff00ff00ff00ff00ff00ff00ff00ff00ff00ff00ff00ff00ff00ff00ff00ff00ff00ff00ff00ff00ff00ff00ff00ff00ff00ff00ff00ff00ff00ff00ff00ff00ff00ff00ff00ff00ff00ff00ff00ff00ff00ff00ff00ff00ff00ff00ff00ff00ff00ff00ff00ff00ff00ff00ff00ff00ff00ff00ff00ff00ff00ff00ff00ff00ff00ff00ff00ff00ff00ff00ff00ff00ff00ff00ff00ff00ff00ff00ff00ff00ff00ff00ff00ff00ff00ff00ff00ff00ff00ff00ff00ff00ff00ff00ff00ff00ff00ff00ff00ff00ff00ff00ff00ff00ff00ff00ff00ff00ff00ff00ff00ff00ff00ff00ff00ff00ff00ff00ff00ff00ff00ff00ff00ff00ff00ff00ff00ff00ff00ff00ff00ff00ff00ff00ff00ff00ff00ff00ff00ff00ff00ff00ff00ff00ff00ff00ff00ff00ff00ff00ff00ff00ff00ff00ff00ff00ff00ff00ff00ff00ff00ff00ff00ff00ff00ff007c7c002eabf60a00a10106bd18000c0100012c0803000b0102fe0903000b0103340803000b0104270803000b0105c60803000c3400011af3000142c040000402000580290001140001800003080001e401008d043300012f00010700011100011b000125000169e90fa3b564528711f311f311f311f311f311f311f311f311f311f311f311f311f311f311f311f311f311f311f311f311f311f311f311f311f311f3000211f300ff00ff00ff00ff000f0200020200ff00443341000284078420000620000340000102001104001eff0056169c7a8e050025010001330f0015371e20000107000212000930dbf855b0e6f4550004a10001540001ce0001d00001bb00014b00018500034c00014d0001010007040003110001ffffffffffffffffffff000401010006a3031004000805c02b010002800009beffff3fef7b050001cbf637ae9a8104010001c7e10f000150fc7ff3fbff7f17bed5a1f8fde2cc07c4f5ffffeefd9f7d59459e05fff5f72b50175af9fccfe3fbb90001dc3ffe3f9d476775a60f0001fc9f79fbffffff81ff1f0708000180c27c2060391584080002023c000c400002de14f8e27f016021fe3dbfff80010001c0f7bf86030001070c0008f8010004620003c808b6270001fe0300021c01300001d05700010100070c510b100100041a000202010100021b1c441c1c1b441b44441b441c4444303008303030303030303030000130303033333333333333010f0101010f01000133430e114315150e43430e0006210b0b00010b212121210b0b0b21212121004b38002cada5000402000582cf000218ba00ff0053495f0200011e000b0100ff00ff00893d006312060002f50b00028a190002256500024be7003225005f4a0f00021d2f00027c2b000281470002d22b001a0a0001180001230001010800242300011900012500012600011000010600010c00010500011400011400010a00010b00015f00030100030100110100ff00ff00ff00ff00ff00ff00ff00ff00ff00ff00ff00ff00ff00d29a9a0002b0827a00010d0085ffffffff010100040215340001080001d0003973051c08050b0200094c616b65000401ff0aff000223000364000506120c00ff0062380001ffffffffffffffffffff0006334100ff00ff00ff00ff00ff00ff00ff00ff00ff00ff00ff00ff00ff00d1b2090300013a0d0006c00001ffff0001010002a5070300013b0f0006c10001feff00010100ff00ff00ff00ff00ff00ff00ff00ff00ff001b1b00027000080200155900070300057887000c0a0a0a0a0a0a007ad0000264ce0001a732bac29200f301001f01001301000b0100010100170100470100ff00a86a00096500036900057300057200017a00097500036800076f00016e00016700099f00076500037100016900037300017a00036200016a00017700017a00016f000381000165000177000b6b00016e00076900056d00017e000b7200016c00016500037400037300016300016500017700016600016600076400016900016900016b00036200016e000167000574000375000379000174000162002b7200ff00046200095f00036900055d00056400015b00096400036800076f00016000015700096800075d00037100016900036a00017a00035a00015d00017700015500016500036500016400015e000b6900016800075f00056900015f000b5f00015d00015900035000036600016300016500015300016600016400076400016900016900016b00036000016e000161000550000350000350000150000162002b7200ff00040900010100010e00014600015200010300010200010100013e00030700011d00014d000107000103000170000550010400030100017300011e012b00010100010700010400010f00016400050a00010e00011f0100020200030100010100030200010100030200010200010100011400010200030a00010200010200030100014400050200010300015900011700014100010400035900010500010800012d0001260005040001030001030001030001010001030003020001010001010001040001010001020001150001c000030100010100030100030200010100010200010d00011f00010f000323000320000107000101002b01005f1400ff000201000502002d0100210100130700030400010400ff00ff005573080c0001ffffff3f0003040004801d000304000202000401001940000cc514030005da00010100058e000105008f0706030303040102050500079f0008f5f5f5f5009c180003050003420003980003e30003fc00038b00036400038900037100038000036d005a0100a4e2e2e2e2e2e2e2e2e2e2e2000501010101010101010101010035010101010080feffffff0f0001200075080800260101007a010034010100010800010a00050b00010a00051500010500051700010300054700010a00054e00010100059800010500059b0001050005ac00010a00ad303031002530303300ff00b60800010b00011500011700014700014e00019800019b0001ac00670800011500014700014e00015000015500019800019b0001ac00ff00ff00ff00ff00ff001c0a0a05030a0105050a00330a050a01080105050a00ff00ff00d53c00ff00ff00ff0026	\N	\\x39020700000000000000000000000000000000000000000000000000000000000000000000000000000001000000000000000100010001000100000001000000000001000000010000000000090001000100010071000100b100010021000100010001000100010031005500c1005700000000000000000000000000000000000000000000000000000000000000000002000000000000000000000000000000000000000000000000000000000000000000020000000000000000000000000000000000000000000000000000000000000000000100000000000000000000000000000000000000000000000000000000000000000002000000000000000000000000000000000000000000000000000000000000000000010000000000010001000000010001000000010001000100000001000000010001000100000000000000000000000000000000000000000000000000000000000000000001000000000000000000000001000000000000000000000000000000000000000000020000000000000000000000000000000000000000000000000000000000000000000200000000000000000000000000000000000000000000000000000000000000000001000300000000000000000001000100000000007700f500000000000000b70001	\\x01636d702032303131303131332020200001000370000302014e656b6f000e02010401000d080264ffffffff00010c46b6000106000128000d02000123000d03000123000f01000102000755f565400003300106000128000c0102000123000c0103000123000c	\\x01636d7020323031313031313320202000000202280d00011a0e32438cff5269636b000165000c07060002080001010001030001050001070001010001a00c001c01021b000d01031e000d01041e000d01053a0d000c01060c02000cdb000109ff64000164000f4f000115002120007d7b86030025e0aa001a03000402000102000235008c9001060c02000c01021b000d0102c40e000c01031e000d0103a50c000c01041e000d0104a00c000c01053a0d000c010001a00c000c	\N	\N	\N	\N	\N	f	\\x4d44000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000003d010000000000000000000000000000000000000000000000000000000000000000000018ba0000010000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	1222	\\x0a00000000000000000000000000000000000000000a00000000000000000000000000000000000000000000000007ff0001000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000	2022-09-12 03:51:49.795355	1231	6333	\N	\\x00000000300a5e0d0002000000120000000100010000005e000000010002	\\x010001000100010001000000000000			f
+3	3	f	t			0	1	0	1662856709	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	f	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	2022-09-11 00:38:29.391721	0	0	\N	\N	\N			f
+\.
+
+
+--
+-- TOC entry 3674 (class 0 OID 29454)
+-- Dependencies: 252
+-- Data for Name: distribution; Type: TABLE DATA; Schema: public; Owner: postgres
+--
+
+COPY public.distribution (id, character_id, type, deadline, event_name, description, times_acceptable, min_hr, max_hr, min_sr, max_sr, min_gr, max_gr, data) FROM stdin;
+1	\N	1	\N	~C15Poogie Dressup!	~C15All costumes for your Poogies!	1	65535	65535	65535	65535	65535	65535	\\x001e0f0000000100000001000000000f0000000200000001000000000f0000000300000001000000000f0000000400000001000000000f0000000500000001000000000f0000000600000001000000000f0000000700000001000000000f0000000800000001000000000f0000000900000001000000000f0000000a00000001000000000f0000000b00000001000000000f0000000c00000001000000000f0000000d00000001000000000f0000000e00000001000000000f0000000f00000001000000000f0000001000000001000000000f0000001100000001000000000f0000001200000001000000000f0000001300000001000000000f0000001400000001000000000f0000001500000001000000000f0000001600000001000000000f0000001700000001000000000f0000001800000001000000000f0000001900000001000000000f0000001a00000001000000000f0000001b00000001000000000f0000001c00000001000000000f0000001d00000001000000000f0000001e0000000100000000
+2	\N	1	\N	~C06More Storage!	~C0520 more Equipment and Item Box pages!	1	65535	65535	65535	65535	65535	65535	\\x00021e0000000000000014000000001f000000000000001400000000
+3	\N	1	\N	~C07ReStyle your Chara!	~C0530 ReStyle points used to edit your character!	1	65535	65535	65535	65535	65535	65535	\\x000110000000000000001e00000000
+\.
+
+
+--
+-- TOC entry 3675 (class 0 OID 29471)
+-- Dependencies: 253
+-- Data for Name: distributions_accepted; Type: TABLE DATA; Schema: public; Owner: postgres
+--
+
+COPY public.distributions_accepted (distribution_id, character_id) FROM stdin;
+\.
+
+
+--
+-- TOC entry 3640 (class 0 OID 24632)
+-- Dependencies: 218
+-- Data for Name: event_week; Type: TABLE DATA; Schema: public; Owner: postgres
+--
+
+COPY public.event_week (id, event_id, date_expiration) FROM stdin;
+\.
+
+
+--
+-- TOC entry 3641 (class 0 OID 24635)
+-- Dependencies: 219
+-- Data for Name: fpoint_items; Type: TABLE DATA; Schema: public; Owner: postgres
+--
+
+COPY public.fpoint_items (hash, itemtype, itemid, quant, itemvalue, tradetype) FROM stdin;
+\.
+
+
+--
+-- TOC entry 3642 (class 0 OID 24638)
+-- Dependencies: 220
+-- Data for Name: gacha_shop; Type: TABLE DATA; Schema: public; Owner: postgres
+--
+
+COPY public.gacha_shop (hash, reqgr, reqhr, gachaname, gachalink0, gachalink1, gachalink2, extraicon, gachatype, hideflag) FROM stdin;
+\.
+
+
+--
+-- TOC entry 3643 (class 0 OID 24643)
+-- Dependencies: 221
+-- Data for Name: gacha_shop_items; Type: TABLE DATA; Schema: public; Owner: postgres
+--
+
+COPY public.gacha_shop_items (shophash, entrytype, itemhash, currtype, currnumber, currquant, percentage, rarityicon, rollscount, itemcount, dailylimit, itemtype, itemid, quantity) FROM stdin;
+\.
+
+
+--
+-- TOC entry 3644 (class 0 OID 24648)
+-- Dependencies: 222
+-- Data for Name: gook; Type: TABLE DATA; Schema: public; Owner: postgres
+--
+
+COPY public.gook (id, gook0, gook1, gook2, gook3, gook4) FROM stdin;
+\.
+
+
+--
+-- TOC entry 3680 (class 0 OID 29487)
+-- Dependencies: 258
+-- Data for Name: guild_adventures; Type: TABLE DATA; Schema: public; Owner: postgres
+--
+
+COPY public.guild_adventures (id, guild_id, destination, charge, depart, return, collected_by) FROM stdin;
+\.
+
+
+--
+-- TOC entry 3678 (class 0 OID 29479)
+-- Dependencies: 256
+-- Data for Name: guild_alliances; Type: TABLE DATA; Schema: public; Owner: postgres
+--
+
+COPY public.guild_alliances (id, name, created_at, parent_id, sub1_id, sub2_id) FROM stdin;
+\.
+
+
+--
+-- TOC entry 3646 (class 0 OID 24654)
+-- Dependencies: 224
+-- Data for Name: guild_applications; Type: TABLE DATA; Schema: public; Owner: postgres
+--
+
+COPY public.guild_applications (id, guild_id, character_id, actor_id, application_type, created_at) FROM stdin;
+1	1	2	1	invited	2022-09-05 23:24:15.144008
+\.
+
+
+--
+-- TOC entry 3648 (class 0 OID 24659)
+-- Dependencies: 226
+-- Data for Name: guild_characters; Type: TABLE DATA; Schema: public; Owner: postgres
+--
+
+COPY public.guild_characters (id, guild_id, character_id, joined_at, avoid_leadership, order_index) FROM stdin;
+1	1	1	2022-07-26 00:25:20.438592	f	1
+\.
+
+
+--
+-- TOC entry 3684 (class 0 OID 29505)
+-- Dependencies: 262
+-- Data for Name: guild_hunts; Type: TABLE DATA; Schema: public; Owner: postgres
+--
+
+COPY public.guild_hunts (id, guild_id, host_id, destination, level, return, acquired, claimed, hunters, treasure, hunt_data, cats_used) FROM stdin;
+\.
+
+
+--
+-- TOC entry 3682 (class 0 OID 29498)
+-- Dependencies: 260
+-- Data for Name: guild_meals; Type: TABLE DATA; Schema: public; Owner: postgres
+--
+
+COPY public.guild_meals (id, guild_id, meal_id, level, expires) FROM stdin;
+\.
+
+
+--
+-- TOC entry 3650 (class 0 OID 24666)
+-- Dependencies: 228
+-- Data for Name: guild_posts; Type: TABLE DATA; Schema: public; Owner: postgres
+--
+
+COPY public.guild_posts (id, guild_id, author_id, post_type, stamp_id, title, body, created_at, liked_by) FROM stdin;
+\.
+
+
+--
+-- TOC entry 3652 (class 0 OID 24674)
+-- Dependencies: 230
+-- Data for Name: guilds; Type: TABLE DATA; Schema: public; Owner: postgres
+--
+
+COPY public.guilds (id, name, created_at, leader_id, main_motto, rank_rp, comment, festival_colour, icon, sub_motto, item_box, event_rp, pugi_name_1, pugi_name_2, pugi_name_3) FROM stdin;
+1	Test001	2022-07-26 00:25:20.438592	1	0	100		none	\N	0	\\x	100			
+\.
+
+
+--
+-- TOC entry 3654 (class 0 OID 24687)
+-- Dependencies: 232
+-- Data for Name: history; Type: TABLE DATA; Schema: public; Owner: postgres
+--
+
+COPY public.history (user_id, admin_id, report_id, title, reason) FROM stdin;
+\.
+
+
+--
+-- TOC entry 3655 (class 0 OID 24692)
+-- Dependencies: 233
+-- Data for Name: login_boost_state; Type: TABLE DATA; Schema: public; Owner: postgres
+--
+
+COPY public.login_boost_state (char_id, week_req, week_count, available, end_time, "ID") FROM stdin;
+2	1	2	t	0	6
+2	2	2	t	0	7
+2	3	0	t	0	8
+2	4	0	t	0	9
+2	5	0	t	0	10
+1	1	2	t	0	1
+1	2	2	t	0	2
+1	3	0	t	0	3
+1	4	0	t	0	4
+1	5	0	t	0	5
+\.
+
+
+--
+-- TOC entry 3657 (class 0 OID 24696)
+-- Dependencies: 235
+-- Data for Name: lucky_box_state; Type: TABLE DATA; Schema: public; Owner: postgres
+--
+
+COPY public.lucky_box_state (char_id, shophash, used_itemhash) FROM stdin;
+\.
+
+
+--
+-- TOC entry 3658 (class 0 OID 24701)
+-- Dependencies: 236
+-- Data for Name: mail; Type: TABLE DATA; Schema: public; Owner: postgres
+--
+
+COPY public.mail (id, sender_id, recipient_id, subject, body, read, attached_item_received, attached_item, attached_item_amount, is_guild_invite, created_at, deleted) FROM stdin;
+1	1	2	Guild! ヽ(・∀・)ﾉ	Erza has invited you to join the wonderful guild Test001, do you accept this challenge?	f	f	0	0	t	2022-09-05 23:24:15.144008	f
+\.
+
+
+--
+-- TOC entry 3660 (class 0 OID 24715)
+-- Dependencies: 238
+-- Data for Name: normal_shop_items; Type: TABLE DATA; Schema: public; Owner: postgres
+--
+
+COPY public.normal_shop_items (shoptype, shopid, itemhash, itemid, points, tradequantity, rankreqlow, rankreqhigh, rankreqg, storelevelreq, maximumquantity, boughtquantity, roadfloorsrequired, weeklyfataliskills, enable_weeks) FROM stdin;
+\.
+
+
+--
+-- TOC entry 3661 (class 0 OID 24718)
+-- Dependencies: 239
+-- Data for Name: questlists; Type: TABLE DATA; Schema: public; Owner: postgres
+--
+
+COPY public.questlists (ind, questlist) FROM stdin;
+\.
+
+
+--
+-- TOC entry 3662 (class 0 OID 24723)
+-- Dependencies: 240
+-- Data for Name: raviregister; Type: TABLE DATA; Schema: public; Owner: postgres
+--
+
+COPY public.raviregister (id, refid, nextravi, ravistarted, raviposttime, ravitype, maxplayers, ravikilled, carvequest, register1, register2, register3, register4, register5) FROM stdin;
+\.
+
+
+--
+-- TOC entry 3664 (class 0 OID 24727)
+-- Dependencies: 242
+-- Data for Name: ravistate; Type: TABLE DATA; Schema: public; Owner: postgres
+--
+
+COPY public.ravistate (id, refid, phase1hp, phase2hp, phase3hp, phase4hp, phase5hp, phase6hp, phase7hp, phase8hp, phase9hp, unknown1, unknown2, unknown3, unknown4, unknown5, unknown6, unknown7, unknown8, unknown9, unknown10, unknown11, unknown12, unknown13, unknown14, unknown15, unknown16, unknown17, unknown18, unknown19, unknown20, damagemultiplier) FROM stdin;
+\.
+
+
+--
+-- TOC entry 3666 (class 0 OID 24731)
+-- Dependencies: 244
+-- Data for Name: ravisupport; Type: TABLE DATA; Schema: public; Owner: postgres
+--
+
+COPY public.ravisupport (id, refid, support1, support2, support3, support4, support5, support6, support7, support8, support9, support10, support11, support12, support13, support14, support15, support16, support17, support18, support19, support20, support21, support22, support23, support24, support25) FROM stdin;
+\.
+
+
+--
+-- TOC entry 3668 (class 0 OID 24735)
+-- Dependencies: 246
+-- Data for Name: schema_migrations; Type: TABLE DATA; Schema: public; Owner: postgres
+--
+
+COPY public.schema_migrations (version, dirty) FROM stdin;
+\.
+
+
+--
+-- TOC entry 3687 (class 0 OID 29667)
+-- Dependencies: 265
+-- Data for Name: servers; Type: TABLE DATA; Schema: public; Owner: postgres
+--
+
+COPY public.servers (server_id, season, current_players) FROM stdin;
+4368	3	0
+4112	2	0
+4113	2	0
+4369	3	0
+4624	3	0
+4880	3	0
+5136	3	0
+5392	3	0
+\.
+
+
+--
+-- TOC entry 3669 (class 0 OID 24744)
+-- Dependencies: 247
+-- Data for Name: shop_item_state; Type: TABLE DATA; Schema: public; Owner: postgres
+--
+
+COPY public.shop_item_state (char_id, itemhash, usedquantity, week) FROM stdin;
+\.
+
+
+--
+-- TOC entry 3686 (class 0 OID 29664)
+-- Dependencies: 264
+-- Data for Name: sign_sessions; Type: TABLE DATA; Schema: public; Owner: postgres
+--
+
+COPY public.sign_sessions (user_id, char_id, token, server_id) FROM stdin;
+2	\N	DknjRefjnmUmsZJu	\N
+1	\N	qlSUFOFAvjUQgjXU	\N
+2	\N	vKRhIdeWhGxkNUGb	\N
+1	\N	SFJYvPdyKqwWajWy	\N
+2	\N	AMefsBlXajQHEzmU	\N
+1	\N	hbhaBWnfxBGNlMDV	\N
+\.
+
+
+--
+-- TOC entry 3670 (class 0 OID 24753)
+-- Dependencies: 248
+-- Data for Name: stepup_state; Type: TABLE DATA; Schema: public; Owner: postgres
+--
+
+COPY public.stepup_state (char_id, shophash, step_progression, step_time) FROM stdin;
+\.
+
+
+--
+-- TOC entry 3685 (class 0 OID 29526)
+-- Dependencies: 263
+-- Data for Name: user_binaries; Type: TABLE DATA; Schema: public; Owner: postgres
+--
+
+COPY public.user_binaries (id, type2, type3) FROM stdin;
+1	\\x00000000000000000000000000000000546573743030310000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000106591600000000000000000000000000000000000000000000000000000000000000000002000000000000000000000003000000000000000000000004000000000000000000000005000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000	\\x2b0100041222fbff002b010001010000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000106bd18000000000000000001002c0803000000000000000000010000000000000000000102fe0903000000000000000103340803000000000000000104270803000000000000000105c60803000000000000000000040000000000004c4d81000000000100cf000100000000002b01000000000000000000000000000000010000000001020000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000001010101000000000000000000000000000000000000000000000000010000000000000000000000000000000000000000000000000000000000000000000000
+2	\\x00000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000106261e000000000000000001002c0802000000000000000000000000000000000000000102fb0902000000000000000103340803000000000000000104270802000000000000000105c60802000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000	\\x2b0100017100ffff003d000001040000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000107370584000000000000000000000000000000000000000000180000000000000000000102fb0902000000000000000003000000000000000000000004000000000000000000000005000000000000000000000000078000000000004ccd800000000001002b010000000001002b01000000000000000000000000000000010000000002020000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000001010101000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000
+\.
+
+
+--
+-- TOC entry 3671 (class 0 OID 24756)
+-- Dependencies: 249
+-- Data for Name: users; Type: TABLE DATA; Schema: public; Owner: postgres
+--
+
+COPY public.users (id, username, password, item_box, rights, last_character) FROM stdin;
+3	undefined	$2a$10$r6q.qvIrWhYhjFrHsdcyvO99PVYo7krUZiTX2kMJ8rEyAyjaniOMy	\N	14	0
+2	undeadgamer056	$2a$10$IvDq9J2QignU1wBTsl22AelPMh8QoHlYb5HO3J11j11vI9aMKQ6VW	\N	846	2
+1	dragonhunter056	$2a$10$/8M4CG6YY4.Z5JPcaSb0B.JuB0oak/7hPvm5VO7XrBKT2abMMxdOu	\\x	846	1
+\.
+
+
+--
+-- TOC entry 3710 (class 0 OID 0)
+-- Dependencies: 210
+-- Name: account_auth_id_seq; Type: SEQUENCE SET; Schema: public; Owner: postgres
+--
+
+SELECT pg_catalog.setval('public.account_auth_id_seq', 1, false);
+
+
+--
+-- TOC entry 3711 (class 0 OID 0)
+-- Dependencies: 213
+-- Name: account_history_report_id_seq; Type: SEQUENCE SET; Schema: public; Owner: postgres
+--
+
+SELECT pg_catalog.setval('public.account_history_report_id_seq', 1, false);
+
+
+--
+-- TOC entry 3712 (class 0 OID 0)
+-- Dependencies: 215
+-- Name: account_moderation_id_seq; Type: SEQUENCE SET; Schema: public; Owner: postgres
+--
+
+SELECT pg_catalog.setval('public.account_moderation_id_seq', 1, false);
+
+
+--
+-- TOC entry 3713 (class 0 OID 0)
+-- Dependencies: 254
+-- Name: airou_id_seq; Type: SEQUENCE SET; Schema: public; Owner: postgres
+--
+
+SELECT pg_catalog.setval('public.airou_id_seq', 2, true);
+
+
+--
+-- TOC entry 3714 (class 0 OID 0)
+-- Dependencies: 217
+-- Name: characters_id_seq; Type: SEQUENCE SET; Schema: public; Owner: postgres
+--
+
+SELECT pg_catalog.setval('public.characters_id_seq', 3, true);
+
+
+--
+-- TOC entry 3715 (class 0 OID 0)
+-- Dependencies: 251
+-- Name: distribution_id_seq; Type: SEQUENCE SET; Schema: public; Owner: postgres
+--
+
+SELECT pg_catalog.setval('public.distribution_id_seq', 3, true);
+
+
+--
+-- TOC entry 3716 (class 0 OID 0)
+-- Dependencies: 223
+-- Name: gook_id_seq; Type: SEQUENCE SET; Schema: public; Owner: postgres
+--
+
+SELECT pg_catalog.setval('public.gook_id_seq', 1, false);
+
+
+--
+-- TOC entry 3717 (class 0 OID 0)
+-- Dependencies: 257
+-- Name: guild_adventures_id_seq; Type: SEQUENCE SET; Schema: public; Owner: postgres
+--
+
+SELECT pg_catalog.setval('public.guild_adventures_id_seq', 1, false);
+
+
+--
+-- TOC entry 3718 (class 0 OID 0)
+-- Dependencies: 255
+-- Name: guild_alliances_id_seq; Type: SEQUENCE SET; Schema: public; Owner: postgres
+--
+
+SELECT pg_catalog.setval('public.guild_alliances_id_seq', 1, false);
+
+
+--
+-- TOC entry 3719 (class 0 OID 0)
+-- Dependencies: 225
+-- Name: guild_applications_id_seq; Type: SEQUENCE SET; Schema: public; Owner: postgres
+--
+
+SELECT pg_catalog.setval('public.guild_applications_id_seq', 1, true);
+
+
+--
+-- TOC entry 3720 (class 0 OID 0)
+-- Dependencies: 227
+-- Name: guild_characters_id_seq; Type: SEQUENCE SET; Schema: public; Owner: postgres
+--
+
+SELECT pg_catalog.setval('public.guild_characters_id_seq', 1, true);
+
+
+--
+-- TOC entry 3721 (class 0 OID 0)
+-- Dependencies: 261
+-- Name: guild_hunts_id_seq; Type: SEQUENCE SET; Schema: public; Owner: postgres
+--
+
+SELECT pg_catalog.setval('public.guild_hunts_id_seq', 1, false);
+
+
+--
+-- TOC entry 3722 (class 0 OID 0)
+-- Dependencies: 259
+-- Name: guild_meals_id_seq; Type: SEQUENCE SET; Schema: public; Owner: postgres
+--
+
+SELECT pg_catalog.setval('public.guild_meals_id_seq', 1, false);
+
+
+--
+-- TOC entry 3723 (class 0 OID 0)
+-- Dependencies: 229
+-- Name: guild_posts_id_seq; Type: SEQUENCE SET; Schema: public; Owner: postgres
+--
+
+SELECT pg_catalog.setval('public.guild_posts_id_seq', 1, false);
+
+
+--
+-- TOC entry 3724 (class 0 OID 0)
+-- Dependencies: 231
+-- Name: guilds_id_seq; Type: SEQUENCE SET; Schema: public; Owner: postgres
+--
+
+SELECT pg_catalog.setval('public.guilds_id_seq', 1, true);
+
+
+--
+-- TOC entry 3725 (class 0 OID 0)
+-- Dependencies: 234
+-- Name: login_boost_state_ID_seq; Type: SEQUENCE SET; Schema: public; Owner: postgres
+--
+
+SELECT pg_catalog.setval('public."login_boost_state_ID_seq"', 10, true);
+
+
+--
+-- TOC entry 3726 (class 0 OID 0)
+-- Dependencies: 237
+-- Name: mail_id_seq; Type: SEQUENCE SET; Schema: public; Owner: postgres
+--
+
+SELECT pg_catalog.setval('public.mail_id_seq', 1, true);
+
+
+--
+-- TOC entry 3727 (class 0 OID 0)
+-- Dependencies: 241
+-- Name: raviregister_id_seq; Type: SEQUENCE SET; Schema: public; Owner: postgres
+--
+
+SELECT pg_catalog.setval('public.raviregister_id_seq', 1, false);
+
+
+--
+-- TOC entry 3728 (class 0 OID 0)
+-- Dependencies: 243
+-- Name: ravistate_id_seq; Type: SEQUENCE SET; Schema: public; Owner: postgres
+--
+
+SELECT pg_catalog.setval('public.ravistate_id_seq', 1, false);
+
+
+--
+-- TOC entry 3729 (class 0 OID 0)
+-- Dependencies: 245
+-- Name: ravisupport_id_seq; Type: SEQUENCE SET; Schema: public; Owner: postgres
+--
+
+SELECT pg_catalog.setval('public.ravisupport_id_seq', 1, false);
+
+
+--
+-- TOC entry 3730 (class 0 OID 0)
+-- Dependencies: 250
+-- Name: users_id_seq; Type: SEQUENCE SET; Schema: public; Owner: postgres
+--
+
+SELECT pg_catalog.setval('public.users_id_seq', 3, true);
+
+
+--
+-- TOC entry 3406 (class 2606 OID 24776)
+-- Name: account_sub account_auth_pkey; Type: CONSTRAINT; Schema: public; Owner: postgres
+--
+
+ALTER TABLE ONLY public.account_sub
+    ADD CONSTRAINT account_auth_pkey PRIMARY KEY (id);
+
+
+--
+-- TOC entry 3410 (class 2606 OID 24778)
+-- Name: account_history account_history_pkey; Type: CONSTRAINT; Schema: public; Owner: postgres
+--
+
+ALTER TABLE ONLY public.account_history
+    ADD CONSTRAINT account_history_pkey PRIMARY KEY (report_id);
+
+
+--
+-- TOC entry 3412 (class 2606 OID 24780)
+-- Name: account_moderation account_moderation_pkey; Type: CONSTRAINT; Schema: public; Owner: postgres
+--
+
+ALTER TABLE ONLY public.account_moderation
+    ADD CONSTRAINT account_moderation_pkey PRIMARY KEY (id);
+
+
+--
+-- TOC entry 3408 (class 2606 OID 24782)
+-- Name: account_ban ban_pkey; Type: CONSTRAINT; Schema: public; Owner: postgres
+--
+
+ALTER TABLE ONLY public.account_ban
+    ADD CONSTRAINT ban_pkey PRIMARY KEY (user_id);
+
+
+--
+-- TOC entry 3414 (class 2606 OID 24784)
+-- Name: characters characters_pkey; Type: CONSTRAINT; Schema: public; Owner: postgres
+--
+
+ALTER TABLE ONLY public.characters
+    ADD CONSTRAINT characters_pkey PRIMARY KEY (id);
+
+
+--
+-- TOC entry 3469 (class 2606 OID 29470)
+-- Name: distribution distribution_pkey; Type: CONSTRAINT; Schema: public; Owner: postgres
+--
+
+ALTER TABLE ONLY public.distribution
+    ADD CONSTRAINT distribution_pkey PRIMARY KEY (id);
+
+
+--
+-- TOC entry 3416 (class 2606 OID 24786)
+-- Name: event_week event_week_pkey; Type: CONSTRAINT; Schema: public; Owner: postgres
+--
+
+ALTER TABLE ONLY public.event_week
+    ADD CONSTRAINT event_week_pkey PRIMARY KEY (id);
+
+
+--
+-- TOC entry 3420 (class 2606 OID 24788)
+-- Name: gacha_shop_items gacha_shop_items_itemhash_key; Type: CONSTRAINT; Schema: public; Owner: postgres
+--
+
+ALTER TABLE ONLY public.gacha_shop_items
+    ADD CONSTRAINT gacha_shop_items_itemhash_key UNIQUE (itemhash);
+
+
+--
+-- TOC entry 3418 (class 2606 OID 24790)
+-- Name: gacha_shop gacha_shop_pkey; Type: CONSTRAINT; Schema: public; Owner: postgres
+--
+
+ALTER TABLE ONLY public.gacha_shop
+    ADD CONSTRAINT gacha_shop_pkey PRIMARY KEY (hash, reqgr, reqhr, gachaname, gachalink0, gachalink1, gachalink2, extraicon, gachatype, hideflag);
+
+
+--
+-- TOC entry 3422 (class 2606 OID 24792)
+-- Name: gook gook_pkey; Type: CONSTRAINT; Schema: public; Owner: postgres
+--
+
+ALTER TABLE ONLY public.gook
+    ADD CONSTRAINT gook_pkey PRIMARY KEY (id);
+
+
+--
+-- TOC entry 3473 (class 2606 OID 29496)
+-- Name: guild_adventures guild_adventures_pkey; Type: CONSTRAINT; Schema: public; Owner: postgres
+--
+
+ALTER TABLE ONLY public.guild_adventures
+    ADD CONSTRAINT guild_adventures_pkey PRIMARY KEY (id);
+
+
+--
+-- TOC entry 3471 (class 2606 OID 29485)
+-- Name: guild_alliances guild_alliances_pkey; Type: CONSTRAINT; Schema: public; Owner: postgres
+--
+
+ALTER TABLE ONLY public.guild_alliances
+    ADD CONSTRAINT guild_alliances_pkey PRIMARY KEY (id);
+
+
+--
+-- TOC entry 3424 (class 2606 OID 24794)
+-- Name: guild_applications guild_application_character_id; Type: CONSTRAINT; Schema: public; Owner: postgres
+--
+
+ALTER TABLE ONLY public.guild_applications
+    ADD CONSTRAINT guild_application_character_id UNIQUE (guild_id, character_id);
+
+
+--
+-- TOC entry 3427 (class 2606 OID 24796)
+-- Name: guild_applications guild_applications_pkey; Type: CONSTRAINT; Schema: public; Owner: postgres
+--
+
+ALTER TABLE ONLY public.guild_applications
+    ADD CONSTRAINT guild_applications_pkey PRIMARY KEY (id);
+
+
+--
+-- TOC entry 3430 (class 2606 OID 24798)
+-- Name: guild_characters guild_characters_pkey; Type: CONSTRAINT; Schema: public; Owner: postgres
+--
+
+ALTER TABLE ONLY public.guild_characters
+    ADD CONSTRAINT guild_characters_pkey PRIMARY KEY (id);
+
+
+--
+-- TOC entry 3477 (class 2606 OID 29516)
+-- Name: guild_hunts guild_hunts_pkey; Type: CONSTRAINT; Schema: public; Owner: postgres
+--
+
+ALTER TABLE ONLY public.guild_hunts
+    ADD CONSTRAINT guild_hunts_pkey PRIMARY KEY (id);
+
+
+--
+-- TOC entry 3475 (class 2606 OID 29503)
+-- Name: guild_meals guild_meals_pkey; Type: CONSTRAINT; Schema: public; Owner: postgres
+--
+
+ALTER TABLE ONLY public.guild_meals
+    ADD CONSTRAINT guild_meals_pkey PRIMARY KEY (id);
+
+
+--
+-- TOC entry 3432 (class 2606 OID 24800)
+-- Name: guild_posts guild_posts_pkey; Type: CONSTRAINT; Schema: public; Owner: postgres
+--
+
+ALTER TABLE ONLY public.guild_posts
+    ADD CONSTRAINT guild_posts_pkey PRIMARY KEY (id);
+
+
+--
+-- TOC entry 3434 (class 2606 OID 24802)
+-- Name: guilds guilds_pkey; Type: CONSTRAINT; Schema: public; Owner: postgres
+--
+
+ALTER TABLE ONLY public.guilds
+    ADD CONSTRAINT guilds_pkey PRIMARY KEY (id);
+
+
+--
+-- TOC entry 3436 (class 2606 OID 24804)
+-- Name: history history_pkey; Type: CONSTRAINT; Schema: public; Owner: postgres
+--
+
+ALTER TABLE ONLY public.history
+    ADD CONSTRAINT history_pkey PRIMARY KEY (report_id);
+
+
+--
+-- TOC entry 3438 (class 2606 OID 24806)
+-- Name: login_boost_state id_week; Type: CONSTRAINT; Schema: public; Owner: postgres
+--
+
+ALTER TABLE ONLY public.login_boost_state
+    ADD CONSTRAINT id_week UNIQUE (char_id, week_req);
+
+
+--
+-- TOC entry 3440 (class 2606 OID 24808)
+-- Name: login_boost_state login_boost_state_pkey; Type: CONSTRAINT; Schema: public; Owner: postgres
+--
+
+ALTER TABLE ONLY public.login_boost_state
+    ADD CONSTRAINT login_boost_state_pkey PRIMARY KEY ("ID");
+
+
+--
+-- TOC entry 3442 (class 2606 OID 24810)
+-- Name: lucky_box_state lucky_box_state_id_shophash; Type: CONSTRAINT; Schema: public; Owner: postgres
+--
+
+ALTER TABLE ONLY public.lucky_box_state
+    ADD CONSTRAINT lucky_box_state_id_shophash UNIQUE (char_id, shophash);
+
+
+--
+-- TOC entry 3444 (class 2606 OID 24812)
+-- Name: mail mail_pkey; Type: CONSTRAINT; Schema: public; Owner: postgres
+--
+
+ALTER TABLE ONLY public.mail
+    ADD CONSTRAINT mail_pkey PRIMARY KEY (id);
+
+
+--
+-- TOC entry 3447 (class 2606 OID 24814)
+-- Name: normal_shop_items normal_shop_items_itemhash_key; Type: CONSTRAINT; Schema: public; Owner: postgres
+--
+
+ALTER TABLE ONLY public.normal_shop_items
+    ADD CONSTRAINT normal_shop_items_itemhash_key UNIQUE (itemhash);
+
+
+--
+-- TOC entry 3449 (class 2606 OID 24816)
+-- Name: normal_shop_items normal_shop_items_pkey; Type: CONSTRAINT; Schema: public; Owner: postgres
+--
+
+ALTER TABLE ONLY public.normal_shop_items
+    ADD CONSTRAINT normal_shop_items_pkey PRIMARY KEY (itemhash);
+
+
+--
+-- TOC entry 3451 (class 2606 OID 24818)
+-- Name: questlists questlists_pkey; Type: CONSTRAINT; Schema: public; Owner: postgres
+--
+
+ALTER TABLE ONLY public.questlists
+    ADD CONSTRAINT questlists_pkey PRIMARY KEY (ind);
+
+
+--
+-- TOC entry 3453 (class 2606 OID 24820)
+-- Name: raviregister raviregister_pkey; Type: CONSTRAINT; Schema: public; Owner: postgres
+--
+
+ALTER TABLE ONLY public.raviregister
+    ADD CONSTRAINT raviregister_pkey PRIMARY KEY (id);
+
+
+--
+-- TOC entry 3455 (class 2606 OID 24822)
+-- Name: ravistate ravistate_pkey; Type: CONSTRAINT; Schema: public; Owner: postgres
+--
+
+ALTER TABLE ONLY public.ravistate
+    ADD CONSTRAINT ravistate_pkey PRIMARY KEY (id);
+
+
+--
+-- TOC entry 3457 (class 2606 OID 24824)
+-- Name: ravisupport ravisupport_pkey; Type: CONSTRAINT; Schema: public; Owner: postgres
+--
+
+ALTER TABLE ONLY public.ravisupport
+    ADD CONSTRAINT ravisupport_pkey PRIMARY KEY (id);
+
+
+--
+-- TOC entry 3459 (class 2606 OID 24826)
+-- Name: schema_migrations schema_migrations_pkey; Type: CONSTRAINT; Schema: public; Owner: postgres
+--
+
+ALTER TABLE ONLY public.schema_migrations
+    ADD CONSTRAINT schema_migrations_pkey PRIMARY KEY (version);
+
+
+--
+-- TOC entry 3461 (class 2606 OID 24830)
+-- Name: shop_item_state shop_item_state_id_itemhash; Type: CONSTRAINT; Schema: public; Owner: postgres
+--
+
+ALTER TABLE ONLY public.shop_item_state
+    ADD CONSTRAINT shop_item_state_id_itemhash UNIQUE (char_id, itemhash);
+
+
+--
+-- TOC entry 3463 (class 2606 OID 24834)
+-- Name: stepup_state stepup_state_id_shophash; Type: CONSTRAINT; Schema: public; Owner: postgres
+--
+
+ALTER TABLE ONLY public.stepup_state
+    ADD CONSTRAINT stepup_state_id_shophash UNIQUE (char_id, shophash);
+
+
+--
+-- TOC entry 3479 (class 2606 OID 29532)
+-- Name: user_binaries user_binaries_pkey; Type: CONSTRAINT; Schema: public; Owner: postgres
+--
+
+ALTER TABLE ONLY public.user_binaries
+    ADD CONSTRAINT user_binaries_pkey PRIMARY KEY (id);
+
+
+--
+-- TOC entry 3465 (class 2606 OID 24836)
+-- Name: users users_pkey; Type: CONSTRAINT; Schema: public; Owner: postgres
+--
+
+ALTER TABLE ONLY public.users
+    ADD CONSTRAINT users_pkey PRIMARY KEY (id);
+
+
+--
+-- TOC entry 3467 (class 2606 OID 24838)
+-- Name: users users_username_key; Type: CONSTRAINT; Schema: public; Owner: postgres
+--
+
+ALTER TABLE ONLY public.users
+    ADD CONSTRAINT users_username_key UNIQUE (username);
+
+
+--
+-- TOC entry 3425 (class 1259 OID 24839)
+-- Name: guild_application_type_index; Type: INDEX; Schema: public; Owner: postgres
+--
+
+CREATE INDEX guild_application_type_index ON public.guild_applications USING btree (application_type);
+
+
+--
+-- TOC entry 3428 (class 1259 OID 24840)
+-- Name: guild_character_unique_index; Type: INDEX; Schema: public; Owner: postgres
+--
+
+CREATE UNIQUE INDEX guild_character_unique_index ON public.guild_characters USING btree (character_id);
+
+
+--
+-- TOC entry 3445 (class 1259 OID 24841)
+-- Name: mail_recipient_deleted_created_id_index; Type: INDEX; Schema: public; Owner: postgres
+--
+
+CREATE INDEX mail_recipient_deleted_created_id_index ON public.mail USING btree (recipient_id, deleted, created_at DESC, id DESC);
+
+
+--
+-- TOC entry 3480 (class 2606 OID 24842)
+-- Name: characters characters_user_id_fkey; Type: FK CONSTRAINT; Schema: public; Owner: postgres
+--
+
+ALTER TABLE ONLY public.characters
+    ADD CONSTRAINT characters_user_id_fkey FOREIGN KEY (user_id) REFERENCES public.users(id);
+
+
+--
+-- TOC entry 3481 (class 2606 OID 24847)
+-- Name: guild_applications guild_applications_actor_id_fkey; Type: FK CONSTRAINT; Schema: public; Owner: postgres
+--
+
+ALTER TABLE ONLY public.guild_applications
+    ADD CONSTRAINT guild_applications_actor_id_fkey FOREIGN KEY (actor_id) REFERENCES public.characters(id);
+
+
+--
+-- TOC entry 3482 (class 2606 OID 24852)
+-- Name: guild_applications guild_applications_character_id_fkey; Type: FK CONSTRAINT; Schema: public; Owner: postgres
+--
+
+ALTER TABLE ONLY public.guild_applications
+    ADD CONSTRAINT guild_applications_character_id_fkey FOREIGN KEY (character_id) REFERENCES public.characters(id);
+
+
+--
+-- TOC entry 3483 (class 2606 OID 24857)
+-- Name: guild_applications guild_applications_guild_id_fkey; Type: FK CONSTRAINT; Schema: public; Owner: postgres
+--
+
+ALTER TABLE ONLY public.guild_applications
+    ADD CONSTRAINT guild_applications_guild_id_fkey FOREIGN KEY (guild_id) REFERENCES public.guilds(id);
+
+
+--
+-- TOC entry 3484 (class 2606 OID 24862)
+-- Name: guild_characters guild_characters_character_id_fkey; Type: FK CONSTRAINT; Schema: public; Owner: postgres
+--
+
+ALTER TABLE ONLY public.guild_characters
+    ADD CONSTRAINT guild_characters_character_id_fkey FOREIGN KEY (character_id) REFERENCES public.characters(id);
+
+
+--
+-- TOC entry 3485 (class 2606 OID 24867)
+-- Name: guild_characters guild_characters_guild_id_fkey; Type: FK CONSTRAINT; Schema: public; Owner: postgres
+--
+
+ALTER TABLE ONLY public.guild_characters
+    ADD CONSTRAINT guild_characters_guild_id_fkey FOREIGN KEY (guild_id) REFERENCES public.guilds(id);
+
+
+--
+-- TOC entry 3486 (class 2606 OID 24872)
+-- Name: login_boost_state login_boost_state_char_id_fkey; Type: FK CONSTRAINT; Schema: public; Owner: postgres
+--
+
+ALTER TABLE ONLY public.login_boost_state
+    ADD CONSTRAINT login_boost_state_char_id_fkey FOREIGN KEY (char_id) REFERENCES public.characters(id);
+
+
+--
+-- TOC entry 3487 (class 2606 OID 24877)
+-- Name: lucky_box_state lucky_box_state_char_id_fkey; Type: FK CONSTRAINT; Schema: public; Owner: postgres
+--
+
+ALTER TABLE ONLY public.lucky_box_state
+    ADD CONSTRAINT lucky_box_state_char_id_fkey FOREIGN KEY (char_id) REFERENCES public.characters(id);
+
+
+--
+-- TOC entry 3488 (class 2606 OID 24882)
+-- Name: mail mail_recipient_id_fkey; Type: FK CONSTRAINT; Schema: public; Owner: postgres
+--
+
+ALTER TABLE ONLY public.mail
+    ADD CONSTRAINT mail_recipient_id_fkey FOREIGN KEY (recipient_id) REFERENCES public.characters(id);
+
+
+--
+-- TOC entry 3489 (class 2606 OID 24887)
+-- Name: mail mail_sender_id_fkey; Type: FK CONSTRAINT; Schema: public; Owner: postgres
+--
+
+ALTER TABLE ONLY public.mail
+    ADD CONSTRAINT mail_sender_id_fkey FOREIGN KEY (sender_id) REFERENCES public.characters(id);
+
+
+--
+-- TOC entry 3490 (class 2606 OID 24892)
+-- Name: shop_item_state shop_item_state_char_id_fkey; Type: FK CONSTRAINT; Schema: public; Owner: postgres
+--
+
+ALTER TABLE ONLY public.shop_item_state
+    ADD CONSTRAINT shop_item_state_char_id_fkey FOREIGN KEY (char_id) REFERENCES public.characters(id);
+
+
+--
+-- TOC entry 3491 (class 2606 OID 24902)
+-- Name: stepup_state stepup_state_char_id_fkey; Type: FK CONSTRAINT; Schema: public; Owner: postgres
+--
+
+ALTER TABLE ONLY public.stepup_state
+    ADD CONSTRAINT stepup_state_char_id_fkey FOREIGN KEY (char_id) REFERENCES public.characters(id);
+
+
+-- Completed on 2019-12-07 10:27:43
+
+--
+-- PostgreSQL database dump complete
+--
+
+--
+-- Database "postgres" dump
+--
+
+\connect postgres
+
+--
+-- PostgreSQL database dump
+--
+
+-- Dumped from database version 14.1
+-- Dumped by pg_dump version 14.1
+
+-- Started on 2019-12-07 10:27:43
+
+SET statement_timeout = 0;
+SET lock_timeout = 0;
+SET idle_in_transaction_session_timeout = 0;
+SET client_encoding = 'UTF8';
+SET standard_conforming_strings = on;
+SELECT pg_catalog.set_config('search_path', '', false);
+SET check_function_bodies = false;
+SET xmloption = content;
+SET client_min_messages = warning;
+SET row_security = off;
+
+--
+-- TOC entry 2 (class 3079 OID 16384)
+-- Name: adminpack; Type: EXTENSION; Schema: -; Owner: -
+--
+
+CREATE EXTENSION IF NOT EXISTS adminpack WITH SCHEMA pg_catalog;
+
+
+--
+-- TOC entry 3304 (class 0 OID 0)
+-- Dependencies: 2
+-- Name: EXTENSION adminpack; Type: COMMENT; Schema: -; Owner: 
+--
+
+COMMENT ON EXTENSION adminpack IS 'administrative functions for PostgreSQL';
+
+
+-- Completed on 2019-12-07 10:27:44
+
+--
+-- PostgreSQL database dump complete
+--
+
+-- Completed on 2019-12-07 10:27:44
+
+--
+-- PostgreSQL database cluster dump complete
+--
+
